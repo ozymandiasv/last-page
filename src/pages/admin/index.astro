@@ -343,15 +343,24 @@ export const prerender = true;
     const saved = sessionStorage.getItem('lp_gh');
     if (saved) { ghToken = saved; show('adminScreen'); hide('loginScreen'); setToday(); }
     document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key==='Enter') login(); });
+    document.getElementById('tokenInput').addEventListener('keydown', e => { if (e.key==='Enter') login(); });
   });
 
   function setToday() {
     document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
   }
 
-  function show(id) { const el = document.getElementById(id); el.style.display = id === 'loginScreen' ? 'flex' : 'block'; el.style.pointerEvents = 'auto'; }
-function hide(id) { const el = document.getElementById(id); el.style.display = 'none'; el.style.pointerEvents = 'none'; }
-  function hide(id) { document.getElementById(id).style.display = 'none'; }
+  function show(id) {
+    const el = document.getElementById(id);
+    el.style.display = id === 'loginScreen' ? 'flex' : 'block';
+    el.style.pointerEvents = 'auto';
+  }
+
+  function hide(id) {
+    const el = document.getElementById(id);
+    el.style.display = 'none';
+    el.style.pointerEvents = 'none';
+  }
 
   // ── Editor ──
   function openEditor(type) {
