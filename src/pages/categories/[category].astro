@@ -1,0 +1,46 @@
+---
+import Base from '../../layouts/Base.astro';
+import { ALL_POSTS, CATEGORIES, AUTHOR, formatDate } from '../../lib/data.js';
+
+export function getStaticPaths() {
+  return CATEGORIES.map(cat => ({
+    params: { category: cat },
+    props:  { cat, posts: ALL_POSTS.filter(p => p.category === cat) },
+  }));
+}
+
+const { cat, posts } = Astro.props;
+
+function groupByMonth(list) {
+  const map = new Map();
+  for (const p of list) {
+    const key = new Date(p.date).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(p);
+  }
+  return map;
+}
+const grouped = groupByMonth(posts);
+---
+<Base title={`${cat} — Last Page`}>
+  <div class="archive-wrap">
+    <a href="/archive" style="font-size:13px;color:var(--text3);display:block;margin-bottom:12px;">← Archive</a>
+    <h1 class="archive-title">{cat}</h1>
+    <p class="archive-sub">{posts.length} {posts.length===1?'piece':'pieces'}</p>
+
+    {Array.from(grouped.entries()).map(([month, mposts]) => (
+      <>
+        <div class="archive-month">{month}</div>
+        {mposts.map(p => (
+          <a href={`/blog/${p.slug}`} class="archive-row">
+            <span class="archive-date">{new Date(p.date).getDate()}</span>
+            <span class={`archive-row-title${p.type==='Verse'?' verse-t':''}`}>
+              {p.title || p.body?.replace(/<[^>]+>/g,'').slice(0,60)+'…'}
+            </span>
+            <span class={`badge badge-${p.type.toLowerCase()}`}>{p.type}</span>
+          </a>
+        ))}
+      </>
+    ))}
+  </div>
+</Base>

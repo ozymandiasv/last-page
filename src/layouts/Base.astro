@@ -1,0 +1,99 @@
+---
+const { title = 'Last Page', active = '' } = Astro.props;
+import { CATEGORIES } from '../lib/data.js';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.2.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="/global.css" />
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      O IV
+      <span class="nav-logo-badge">Last Page</span>
+    </a>
+    <div class="nav-links">
+      <a href="/"            class={active==='home'    ?'active':''}>Home</a>
+      <a href="/types/blog"  class={active==='blog'    ?'active':''}>Blog</a>
+      <a href="/types/essay" class={active==='essay'   ?'active':''}>Essay</a>
+      <a href="/types/verse" class={active==='verse'   ?'active':''}>Verse</a>
+      <a href="/notes"       class={active==='notes'   ?'active':''}>Notes</a>
+      <a href="/archive"     class={active==='archive' ?'active':''}>Archive</a>
+      <a href="/about"       class={`hide-mob ${active==='about'?'active':''}`}>About</a>
+      <div class="nav-sep"></div>
+      <a href="https://twitter.com/ozymandiasiv" target="_blank" rel="noopener" class="nav-icon" aria-label="Twitter / X">
+        <i class="ti ti-brand-x"></i>
+      </a>
+      <a href="https://reddit.com/u/ozymandiasiv" target="_blank" rel="noopener" class="nav-icon" aria-label="Reddit">
+        <i class="ti ti-brand-reddit"></i>
+      </a>
+      <div class="nav-sep"></div>
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+        <i class="ti ti-sun"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<slot />
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">O IV · Last Page</div>
+    <div class="footer-cats">
+      {CATEGORIES.map(cat => (
+        <a href={`/categories/${cat}`} class="footer-cat">{cat}</a>
+      ))}
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} amal.v · Last Page</span>
+      <div style="display:flex;gap:16px;">
+        <a href="https://twitter.com/ozymandiasiv" target="_blank" rel="noopener" style="color:var(--text3);font-size:15px;"><i class="ti ti-brand-x"></i></a>
+        <a href="https://reddit.com/u/ozymandiasiv" target="_blank" rel="noopener" style="color:var(--text3);font-size:15px;"><i class="ti ti-brand-reddit"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Theme
+  const root = document.documentElement;
+  const btn  = document.getElementById('themeBtn');
+  const icon = btn?.querySelector('i');
+  const saved = localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+  root.setAttribute('data-theme', saved);
+  if (icon) icon.className = saved === 'dark' ? 'ti ti-moon' : 'ti ti-sun';
+  btn?.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    if (icon) icon.className = next === 'dark' ? 'ti ti-moon' : 'ti ti-sun';
+  });
+
+  // Reading progress bar
+  const bar = document.getElementById('progress-bar');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const doc  = document.documentElement;
+      const pct  = doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+  }
+</script>
+</body>
+</html>
