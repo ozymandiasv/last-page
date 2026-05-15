@@ -53,7 +53,7 @@ export const prerender = true;
     .hint a{color:var(--text2);}
 
     /* Nav */
-    #adminScreen{display:none;}
+    #adminScreen{display:none;pointer-events:none;}
     .admin-nav{
       background:var(--bg2);border-bottom:0.5px solid var(--border2);
       padding:0 5vw;height:52px;display:flex;align-items:center;
@@ -349,7 +349,8 @@ export const prerender = true;
     document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
   }
 
-  function show(id) { document.getElementById(id).style.display = 'block'; }
+  function show(id) { const el = document.getElementById(id); el.style.display = id === 'loginScreen' ? 'flex' : 'block'; el.style.pointerEvents = 'auto'; }
+function hide(id) { const el = document.getElementById(id); el.style.display = 'none'; el.style.pointerEvents = 'none'; }
   function hide(id) { document.getElementById(id).style.display = 'none'; }
 
   // ── Editor ──
