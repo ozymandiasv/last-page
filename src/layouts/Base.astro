@@ -19,13 +19,20 @@ import { CATEGORIES } from '../lib/data.js';
 <div id="progress-bar"></div>
 
 <!-- NAV -->
-<nav class="nav">
-  <div class="nav-inner">
+<nav class="site-nav">
+  <div class="nav-top">
     <a href="/" class="nav-logo">
       O IV
       <span class="nav-logo-badge">Last Page</span>
     </a>
-    <div class="nav-links">
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links" id="mainNavLinks">
       <a href="/"            class={active==='home'    ?'active':''}>Home</a>
       <a href="/types/blog"  class={active==='blog'    ?'active':''}>Blog</a>
       <a href="/types/essay" class={active==='essay'   ?'active':''}>Essay</a>
@@ -33,20 +40,70 @@ import { CATEGORIES } from '../lib/data.js';
       <a href="/notes"       class={active==='notes'   ?'active':''}>Notes</a>
       <a href="/archive"     class={active==='archive' ?'active':''}>Archive</a>
       <a href="/about"       class={`hide-mob ${active==='about'?'active':''}`}>About</a>
-      <div class="nav-sep"></div>
+    </div>
+
+    <div class="nav-actions">
       <a href="https://x.com/theozymandiasiv" target="_blank" rel="noopener" class="nav-icon" aria-label="Twitter / X">
         <i class="ti ti-brand-x"></i>
       </a>
       <a href="https://www.reddit.com/user/spellriddle/" target="_blank" rel="noopener" class="nav-icon" aria-label="Reddit">
         <i class="ti ti-brand-reddit"></i>
       </a>
-      <div class="nav-sep"></div>
       <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
         <i class="ti ti-sun"></i>
       </button>
     </div>
   </div>
+
+  <div class="nav-mobile-menu" id="mobileMenu">
+    <div class="mobile-links">
+      <a href="/">Home</a>
+      <a href="/types/blog">Blog</a>
+      <a href="/types/essay">Essay</a>
+      <a href="/types/verse">Verse</a>
+      <a href="/notes">Notes</a>
+      <a href="/archive">Archive</a>
+      <a href="/about">About</a>
+      <div style="padding-top:8px;display:flex;gap:12px;">
+        <a href="https://x.com/theozymandiasiv" target="_blank" rel="noopener"><i class="ti ti-brand-x"></i></a>
+        <a href="https://www.reddit.com/user/spellriddle/" target="_blank" rel="noopener"><i class="ti ti-brand-reddit"></i></a>
+      </div>
+    </div>
+  </div>
 </nav>
+
+<style>
+  :root{--nav-border:rgba(0,0,0,0.06);}
+  .site-nav{border-bottom:0.5px solid var(--nav-border);}
+  .nav-top{padding:18px 5vw;text-align:center;}
+  .nav-logo{font-family:var(--serif);font-size:18px;text-decoration:none;color:inherit;}
+  .nav-logo-badge{display:block;font-size:12px;color:var(--text3);}
+
+  .nav-bottom{display:flex;align-items:center;justify-content:center;padding:10px 5vw;gap:24px;position:relative}
+  .nav-links{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .nav-links a{color:var(--text2);text-decoration:none;padding:6px 2px;font-size:14px}
+  .nav-links a.active{color:var(--text);font-weight:500}
+  .nav-actions{position:absolute;right:5vw;display:flex;gap:12px;align-items:center}
+  .nav-toggle{display:none;border:0;background:transparent;width:36px;height:36px;position:relative}
+  .nav-toggle span{display:block;height:2px;width:22px;background:var(--text);position:absolute;left:7px;transition:transform .2s,opacity .2s}
+  .nav-toggle span:nth-child(1){top:8px}
+  .nav-toggle span:nth-child(2){top:16px}
+  .nav-toggle span:nth-child(3){top:24px}
+  .nav-toggle.open span:nth-child(1){transform:rotate(45deg);top:16px}
+  .nav-toggle.open span:nth-child(2){opacity:0}
+  .nav-toggle.open span:nth-child(3){transform:rotate(-45deg);top:16px}
+
+  .nav-mobile-menu{display:none}
+  .mobile-links a{display:block;padding:10px 5vw;border-top:0.5px solid var(--nav-border);color:var(--text2);text-decoration:none}
+
+  @media(max-width:680px){
+    .nav-bottom{justify-content:space-between;padding:8px 12px}
+    .nav-actions{position:static}
+    .nav-links{display:none}
+    .nav-toggle{display:block}
+    .nav-mobile-menu.open{display:block}
+  }
+</style>
 
 <slot />
 
@@ -93,6 +150,27 @@ import { CATEGORIES } from '../lib/data.js';
       const pct  = doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100;
       bar.style.width = Math.min(pct, 100) + '%';
     }, { passive: true });
+  }
+
+  // Mobile menu toggle
+  function toggleMenu(){
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.querySelector('.nav-toggle');
+    if(!menu) return;
+    menu.classList.toggle('open');
+    btn?.classList.toggle('open');
+  }
+  window.toggleMenu = toggleMenu;
+
+  // Close mobile menu when a link is clicked
+  const mobileMenu = document.getElementById('mobileMenu');
+  if(mobileMenu){
+    mobileMenu.addEventListener('click', (e)=>{
+      if(e.target.tagName === 'A'){
+        mobileMenu.classList.remove('open');
+        document.querySelector('.nav-toggle')?.classList.remove('open');
+      }
+    });
   }
 </script>
 </body>
