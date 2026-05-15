@@ -1,0 +1,494 @@
+---
+export const prerender = true;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Last Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.2.0/dist/tabler-icons.min.css" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --bg:#f7f6f3;--bg2:#ffffff;--bg3:#f0efe9;
+      --text:#1a1a1a;--text2:#555;--text3:#999;
+      --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.06);
+      --serif:'Lora',Georgia,serif;--sans:'Inter',system-ui,sans-serif;
+    }
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
+
+    /* Login */
+    #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+    .login-box{
+      background:var(--bg2);border:0.5px solid var(--border2);
+      border-radius:16px;padding:40px;width:100%;max-width:380px;
+      box-shadow:0 4px 24px rgba(0,0,0,0.06);
+    }
+    .login-title{font-family:var(--serif);font-size:22px;margin-bottom:6px;}
+    .login-sub{font-size:13px;color:var(--text3);margin-bottom:28px;}
+    .field{margin-bottom:16px;}
+    .field label{display:block;font-size:11px;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;}
+    .field input{
+      width:100%;padding:10px 14px;border:0.5px solid var(--border);
+      border-radius:8px;font-family:var(--sans);font-size:14px;
+      background:var(--bg);color:var(--text);outline:none;transition:border-color .15s;
+    }
+    .field input:focus{border-color:var(--text);}
+    .btn{
+      width:100%;padding:11px;border-radius:8px;border:none;
+      background:var(--text);color:white;font-size:14px;font-weight:500;
+      cursor:pointer;font-family:var(--sans);transition:opacity .15s;
+    }
+    .btn:hover{opacity:.85;}
+    .login-error{color:#dc2626;font-size:13px;margin-top:10px;display:none;}
+    .token-wrap{position:relative;}
+    .token-wrap input{padding-right:52px;}
+    .token-eye{
+      position:absolute;right:12px;top:50%;transform:translateY(-50%);
+      background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;
+    }
+    .hint{font-size:11px;color:var(--text3);margin-top:20px;padding-top:16px;border-top:0.5px solid var(--border2);line-height:1.6;}
+    .hint a{color:var(--text2);}
+
+    /* Nav */
+    #adminScreen{display:none;}
+    .admin-nav{
+      background:var(--bg2);border-bottom:0.5px solid var(--border2);
+      padding:0 5vw;height:52px;display:flex;align-items:center;
+      justify-content:space-between;position:sticky;top:0;z-index:10;
+    }
+    .admin-logo{font-family:var(--serif);font-size:16px;}
+    .nav-actions{display:flex;gap:10px;align-items:center;}
+    .nav-btn{
+      padding:7px 14px;border-radius:8px;border:0.5px solid var(--border);
+      background:transparent;color:var(--text2);font-size:12px;
+      cursor:pointer;font-family:var(--sans);transition:all .15s;text-decoration:none;display:inline-block;
+    }
+    .nav-btn:hover{background:var(--bg3);color:var(--text);}
+    .nav-btn.primary{background:var(--text);color:white;border-color:var(--text);}
+    .nav-btn.primary:hover{opacity:.85;}
+
+    /* Dashboard */
+    #dashboard{max-width:780px;margin:0 auto;padding:48px 5vw 80px;}
+    .dash-title{font-family:var(--serif);font-size:26px;margin-bottom:6px;}
+    .dash-sub{font-size:14px;color:var(--text2);margin-bottom:36px;}
+    .type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+    .type-card{
+      background:var(--bg2);border:0.5px solid var(--border2);
+      border-radius:14px;padding:24px 20px;cursor:pointer;
+      transition:border-color .15s;text-align:left;width:100%;
+    }
+    .type-card:hover{border-color:var(--border);}
+    .type-card-icon{font-size:20px;color:var(--text3);margin-bottom:10px;}
+    .type-card-name{font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:4px;}
+    .type-card-desc{font-size:12px;color:var(--text3);}
+
+    /* Editor */
+    #editor{display:none;max-width:1000px;margin:0 auto;padding:32px 5vw 80px;}
+    .editor-top{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+    .back-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:4px;}
+    .editor-type{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
+
+    .editor-layout{display:grid;grid-template-columns:1fr 260px;gap:24px;align-items:start;}
+
+    /* Main writing area */
+    .writing-area{}
+    .title-inp{
+      width:100%;border:none;background:transparent;
+      font-family:var(--serif);font-size:clamp(22px,3vw,30px);
+      color:var(--text);outline:none;padding-bottom:14px;
+      border-bottom:0.5px solid var(--border2);margin-bottom:14px;
+    }
+    .title-inp::placeholder{color:var(--text3);}
+    .subtitle-inp{
+      width:100%;border:none;background:transparent;
+      font-family:var(--serif);font-style:italic;font-size:17px;
+      color:var(--text2);outline:none;margin-bottom:18px;
+    }
+    .subtitle-inp::placeholder{color:var(--text3);}
+
+    .toolbar{
+      display:flex;gap:3px;flex-wrap:wrap;
+      padding:7px 10px;background:var(--bg3);
+      border-radius:8px;margin-bottom:10px;
+    }
+    .tb{
+      padding:5px 9px;border-radius:5px;border:none;
+      background:transparent;color:var(--text2);cursor:pointer;
+      font-size:13px;font-family:var(--sans);transition:all .1s;line-height:1;
+    }
+    .tb:hover{background:var(--bg2);color:var(--text);}
+    .tb-sep{width:0.5px;background:var(--border);margin:0 3px;align-self:stretch;}
+
+    .body-inp{
+      width:100%;min-height:420px;border:0.5px solid var(--border2);
+      border-radius:10px;padding:20px;font-family:var(--sans);
+      font-size:16px;line-height:1.8;color:var(--text);
+      background:var(--bg2);outline:none;resize:vertical;
+      transition:border-color .15s;
+    }
+    .body-inp:focus{border-color:rgba(0,0,0,0.18);}
+
+    /* Sidebar */
+    .sidebar-card{
+      background:var(--bg2);border:0.5px solid var(--border2);
+      border-radius:12px;padding:18px;margin-bottom:12px;
+    }
+    .sc-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;}
+    .sf{margin-bottom:12px;}
+    .sf:last-child{margin-bottom:0;}
+    .sf label{display:block;font-size:11px;color:var(--text3);margin-bottom:5px;}
+    .sf input,.sf select,.sf textarea{
+      width:100%;padding:8px 10px;border:0.5px solid var(--border);
+      border-radius:6px;font-family:var(--sans);font-size:13px;
+      background:var(--bg);color:var(--text);outline:none;
+      transition:border-color .15s;
+    }
+    .sf input:focus,.sf select:focus,.sf textarea:focus{border-color:rgba(0,0,0,0.2);}
+    .sf textarea{min-height:64px;resize:vertical;}
+
+    .pub-btn{
+      width:100%;padding:12px;border-radius:10px;border:none;
+      background:var(--text);color:white;font-size:14px;font-weight:500;
+      cursor:pointer;font-family:var(--sans);transition:opacity .15s;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .pub-btn:hover{opacity:.85;}
+    .pub-btn:disabled{opacity:.45;cursor:not-allowed;}
+
+    .status{
+      margin-top:10px;padding:10px 14px;border-radius:8px;
+      font-size:13px;display:none;line-height:1.5;
+    }
+    .status.ok  {background:#dcfce7;color:#166534;display:block;}
+    .status.err {background:#fee2e2;color:#991b1b;display:block;}
+    .status.loading{background:var(--bg3);color:var(--text2);display:block;}
+
+    @media(max-width:680px){
+      .editor-layout{grid-template-columns:1fr;}
+      .type-grid{grid-template-columns:1fr;}
+      .login-box{padding:28px 20px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-title">O IV · Last Page</div>
+    <div class="login-sub">Admin panel — sign in to write</div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="pwInput" placeholder="Enter your password" />
+    </div>
+    <div class="field">
+      <label>GitHub Token</label>
+      <div class="token-wrap">
+        <input type="password" id="tokenInput" placeholder="ghp_... or github_pat_..." />
+        <button class="token-eye" onclick="toggleEye()" id="eyeBtn"><i class="ti ti-eye"></i></button>
+      </div>
+    </div>
+    <button class="btn" onclick="login()">Sign In</button>
+    <div class="login-error" id="loginErr">Wrong password.</div>
+    <div class="hint">
+      Your GitHub token needs <strong>repo</strong> scope.<br>
+      <a href="https://github.com/settings/tokens" target="_blank">Generate one here →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminScreen">
+  <nav class="admin-nav">
+    <div class="admin-logo">Last Page · Admin</div>
+    <div class="nav-actions">
+      <a href="/" target="_blank" class="nav-btn">View site →</a>
+      <button class="nav-btn" onclick="logout()">Sign out</button>
+    </div>
+  </nav>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <h1 class="dash-title">What are you writing?</h1>
+    <p class="dash-sub">Choose a format to start.</p>
+    <div class="type-grid">
+      <button class="type-card" onclick="openEditor('Blog')">
+        <div class="type-card-icon"><i class="ti ti-pencil"></i></div>
+        <div class="type-card-name">Blog</div>
+        <div class="type-card-desc">Events, observations, stories from life</div>
+      </button>
+      <button class="type-card" onclick="openEditor('Essay')">
+        <div class="type-card-icon"><i class="ti ti-brain"></i></div>
+        <div class="type-card-name">Essay</div>
+        <div class="type-card-desc">Deep thoughts, long form arguments</div>
+      </button>
+      <button class="type-card" onclick="openEditor('Verse')">
+        <div class="type-card-icon"><i class="ti ti-feather"></i></div>
+        <div class="type-card-name">Verse</div>
+        <div class="type-card-desc">Poetry, fragments, verse</div>
+      </button>
+      <button class="type-card" onclick="openEditor('Notes')">
+        <div class="type-card-icon"><i class="ti ti-message-circle"></i></div>
+        <div class="type-card-name">Note</div>
+        <div class="type-card-desc">Tweet-length thoughts</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Editor -->
+  <div id="editor">
+    <div class="editor-top">
+      <button class="back-btn" onclick="backToDash()"><i class="ti ti-arrow-left"></i></button>
+      <span class="editor-type" id="editorTypeLabel">Blog</span>
+    </div>
+
+    <div class="editor-layout">
+      <div class="writing-area">
+        <input class="title-inp" id="postTitle" placeholder="Title" />
+        <input class="subtitle-inp" id="postSubtitle" placeholder="Subtitle (optional)" />
+
+        <div class="toolbar" id="mainToolbar">
+          <button class="tb" onclick="wrap('**','**')"><b>B</b></button>
+          <button class="tb" onclick="wrap('*','*')"><i>I</i></button>
+          <div class="tb-sep"></div>
+          <button class="tb" onclick="insertLine('## ')">H2</button>
+          <button class="tb" onclick="insertLine('### ')">H3</button>
+          <div class="tb-sep"></div>
+          <button class="tb" onclick="insertLine('> ')"><i class="ti ti-quote"></i></button>
+          <button class="tb" onclick="insertLine('- ')"><i class="ti ti-list"></i></button>
+          <button class="tb" onclick="insertLine('---')">—</button>
+          <div class="tb-sep"></div>
+          <button class="tb" onclick="insertLink()"><i class="ti ti-link"></i></button>
+        </div>
+
+        <textarea class="body-inp" id="postBody" placeholder="Start writing…"></textarea>
+      </div>
+
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <div class="sc-title">Details</div>
+          <div class="sf">
+            <label>Date</label>
+            <input type="date" id="postDate" />
+          </div>
+          <div class="sf" id="catField">
+            <label>Category</label>
+            <select id="postCategory">
+              <option>State and Power</option>
+              <option>Culture and History</option>
+              <option>Literature and Media</option>
+              <option>Sports and Events</option>
+              <option>Science and Technology</option>
+              <option>Society and Future</option>
+              <option>Ideologies and Philosophies</option>
+              <option selected>Life</option>
+            </select>
+          </div>
+          <div class="sf" id="prevField" style="display:none">
+            <label>Preview (first 2 lines)</label>
+            <textarea id="postPreview" placeholder="First two lines of your verse…"></textarea>
+          </div>
+          <div class="sf">
+            <label>Tags (comma separated)</label>
+            <input type="text" id="postTags" placeholder="memory, travel, cinema" />
+          </div>
+          <div class="sf" id="coverField">
+            <label>Cover Image URL</label>
+            <input type="text" id="postCover" placeholder="https://images.unsplash.com/…" />
+          </div>
+        </div>
+
+        <button class="pub-btn" id="pubBtn" onclick="publish()">
+          <i class="ti ti-send"></i> Publish
+        </button>
+        <div class="status" id="statusMsg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ADMIN_PASSWORD = 'lastpage2025';
+  const GITHUB_REPO   = 'ozymandiasv/last-page';
+  const GITHUB_BRANCH = 'main';
+  let currentType = 'Blog';
+  let ghToken = '';
+
+  // ── Auth ──
+  function login() {
+    const pw    = document.getElementById('pwInput').value;
+    const token = document.getElementById('tokenInput').value.trim();
+    if (pw !== ADMIN_PASSWORD) {
+      document.getElementById('loginErr').style.display = 'block'; return;
+    }
+    if (!token) { alert('Please enter your GitHub token.'); return; }
+    ghToken = token;
+    sessionStorage.setItem('lp_gh', token);
+    show('adminScreen'); hide('loginScreen'); setToday();
+  }
+
+  function logout() { sessionStorage.removeItem('lp_gh'); location.reload(); }
+
+  function toggleEye() {
+    const inp = document.getElementById('tokenInput');
+    const ico = document.querySelector('#eyeBtn i');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    ico.className = inp.type === 'password' ? 'ti ti-eye' : 'ti ti-eye-off';
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = sessionStorage.getItem('lp_gh');
+    if (saved) { ghToken = saved; show('adminScreen'); hide('loginScreen'); setToday(); }
+    document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key==='Enter') login(); });
+  });
+
+  function setToday() {
+    document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
+  }
+
+  function show(id) { document.getElementById(id).style.display = 'block'; }
+  function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+  // ── Editor ──
+  function openEditor(type) {
+    currentType = type;
+    hide('dashboard'); show('editor');
+    document.getElementById('editorTypeLabel').textContent = type;
+
+    const isImgType  = type === 'Blog' || type === 'Essay';
+    const isCatType  = type === 'Blog' || type === 'Essay';
+    const isVerse    = type === 'Verse';
+    const isNote     = type === 'Notes';
+
+    document.getElementById('coverField').style.display   = isImgType ? '' : 'none';
+    document.getElementById('catField').style.display     = isCatType ? '' : 'none';
+    document.getElementById('prevField').style.display    = isVerse   ? '' : 'none';
+    document.getElementById('postSubtitle').style.display = isImgType ? '' : 'none';
+    document.getElementById('mainToolbar').style.display  = isNote    ? 'none' : '';
+
+    document.getElementById('postTitle').placeholder =
+      isNote ? 'Internal title (not shown publicly)' : 'Title';
+    document.getElementById('postBody').placeholder =
+      isNote  ? 'Your note — a thought, an observation…' :
+      isVerse ? 'Write your verse here…' : 'Start writing…';
+
+    document.getElementById('postTitle').focus();
+  }
+
+  function backToDash() {
+    hide('editor'); show('dashboard');
+    ['postTitle','postSubtitle','postBody','postTags','postCover','postPreview']
+      .forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+    const s = document.getElementById('statusMsg');
+    s.className='status'; s.textContent='';
+    setToday();
+  }
+
+  // ── Toolbar ──
+  function wrap(b, a) {
+    const ta=document.getElementById('postBody');
+    const s=ta.selectionStart, e=ta.selectionEnd, sel=ta.value.slice(s,e);
+    ta.value=ta.value.slice(0,s)+b+sel+a+ta.value.slice(e);
+    ta.selectionStart=s+b.length; ta.selectionEnd=s+b.length+sel.length; ta.focus();
+  }
+  function insertLine(pfx) {
+    const ta=document.getElementById('postBody');
+    const s=ta.selectionStart, nl=ta.value.lastIndexOf('\n',s-1), pos=nl+1;
+    ta.value=ta.value.slice(0,pos)+pfx+ta.value.slice(pos);
+    ta.selectionStart=ta.selectionEnd=pos+pfx.length; ta.focus();
+  }
+  function insertLink() {
+    const url=prompt('URL:'); if(!url) return;
+    const lbl=prompt('Label (optional):') || url;
+    const ta=document.getElementById('postBody');
+    const s=ta.selectionStart, ins=`[${lbl}](${url})`;
+    ta.value=ta.value.slice(0,s)+ins+ta.value.slice(s);
+    ta.selectionStart=ta.selectionEnd=s+ins.length; ta.focus();
+  }
+
+  // ── Helpers ──
+  function slugify(str) {
+    return str.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').slice(0,60);
+  }
+
+  function buildFrontmatter() {
+    const title    = document.getElementById('postTitle').value.trim();
+    const subtitle = document.getElementById('postSubtitle')?.value.trim() || '';
+    const date     = document.getElementById('postDate').value;
+    const category = document.getElementById('postCategory')?.value || '';
+    const tags     = document.getElementById('postTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+    const cover    = document.getElementById('postCover')?.value.trim() || '';
+    const preview  = document.getElementById('postPreview')?.value.trim() || '';
+    const type     = currentType;
+
+    let fm = `---\ntitle: "${title}"\ntype: "${type}"\ndate: "${date}"\npublished: true\n`;
+    if (subtitle && (type==='Blog'||type==='Essay')) fm += `subtitle: "${subtitle}"\n`;
+    if (category && (type==='Blog'||type==='Essay')) fm += `category: "${category}"\n`;
+    if (cover    && (type==='Blog'||type==='Essay')) fm += `cover: "${cover}"\n`;
+    if (preview  &&  type==='Verse')                 fm += `preview: "${preview}"\n`;
+    if (tags.length) fm += `tags:\n${tags.map(t=>`  - ${t}`).join('\n')}\n`;
+    fm += `---\n\n`;
+    return fm;
+  }
+
+  // ── Publish ──
+  async function publish() {
+    const title = document.getElementById('postTitle').value.trim();
+    const body  = document.getElementById('postBody').value.trim();
+    if (!title) { alert('Please add a title.'); return; }
+    if (!body)  { alert('Please write some content.'); return; }
+
+    const slug    = slugify(title);
+    const typeDir = {Blog:'blogs',Essay:'essays',Verse:'verses',Notes:'notes'}[currentType];
+    const path    = `src/content/${typeDir}/${slug}.md`;
+    const content = buildFrontmatter() + body;
+    const encoded = btoa(unescape(encodeURIComponent(content)));
+
+    const btn = document.getElementById('pubBtn');
+    const msg = document.getElementById('statusMsg');
+    btn.disabled = true;
+    msg.className = 'status loading'; msg.textContent = 'Publishing to GitHub…';
+
+    try {
+      let sha = null;
+      const check = await fetch(
+        `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,
+        { headers: { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json' } }
+      );
+      if (check.ok) sha = (await check.json()).sha;
+
+      const payload = { message: `post: ${title}`, content: encoded, branch: GITHUB_BRANCH };
+      if (sha) payload.sha = sha;
+
+      const res = await fetch(
+        `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${ghToken}`,
+            Accept: 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (res.ok) {
+        msg.className = 'status ok';
+        msg.textContent = `✓ Published! "${title}" is live — site rebuilding in ~30 seconds.`;
+      } else {
+        const err = await res.json();
+        throw new Error(err.message || 'GitHub API error');
+      }
+    } catch(e) {
+      msg.className = 'status err';
+      msg.textContent = `Error: ${e.message}`;
+    }
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>

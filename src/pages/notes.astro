@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import { NOTES, formatDate } from '../lib/data.js';
+---
+<Base title="Notes — Last Page" active="notes">
+  <div class="notes-feed">
+    <h1 class="notes-feed-title">Notes</h1>
+    {NOTES.map(note => (
+      <a href={`/blog/${note.slug}`} class="notes-feed-card">
+        <div class="notes-feed-text">{note.body}</div>
+        <div class="notes-feed-meta">
+          {formatDate(note.date)}
+          {note.tags?.length > 0 && (
+            <span style="margin-left:10px;">
+              {note.tags.map(tag => (
+                <span class={`notion-tag tag-${tag.colour}`} style="font-size:11px;padding:2px 7px;margin-right:4px;">{tag.name}</span>
+              ))}
+            </span>
+          )}
+        </div>
+      </a>
+    ))}
+  </div>
+</Base>

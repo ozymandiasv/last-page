@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import { BLOGS as sampleBlogs, ESSAYS as sampleEssays, NOTES as sampleNotes, VERSES as sampleVerses, AUTHOR, formatDate } from '../lib/data.js';
+import { getBlogs, getEssays, getNotes, getVerses } from '../lib/content.js';
+
+// Merge real content with sample data — real posts come first
+const realBlogs  = getBlogs();
+const realEssays = getEssays();
+const realNotes  = getNotes();
+const realVerses = getVerses();
+
+const blogs  = [...realBlogs,  ...sampleBlogs ].slice(0, 20);
+const essays = [...realEssays, ...sampleEssays].slice(0, 10);
+const notes  = [...realNotes,  ...sampleNotes ].slice(0, 10);
+const verses = [...realVerses, ...sampleVerses].slice(0, 10);
+
+// Hero: top 5 blogs
+const heroMain  = blogs[0];
+const heroSideL = [blogs[1], blogs[2]].filter(Boolean);
+const heroSideR = [blogs[3], blogs[4]].filter(Boolean);
+
+// Essays section: first 5
+const essayRow = essays.slice(0, 5);
+
+// Recent posts: blogs 6+, essays 6+, sorted by date
+const recentPosts = [...blogs.slice(5), ...essays.slice(5)]
+  .sort((a,b) => new Date(b.date) - new Date(a.date))
+  .slice(0, 10);
+---
+<Base title="Last Page" active="home">
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="hero-side">
+      {heroSideL.map(post => (
+        <a href={`/blog/${post.slug}`} class="hero-side-post">
+          {post.cover && <img class="hero-side-img" src={post.cover} alt={post.title} loading="eager" />}
+          <div class="hero-side-title">{post.title}</div>
+          <div class="hero-side-meta">{formatDate(post.date)} · {AUTHOR}</div>
+        </a>
+      ))}
+    </div>
+
+    <a href={`/blog/${heroMain.slug}`} class="hero-main">
+      {heroMain.cover && <img class="hero-main-img" src={heroMain.cover} alt={heroMain.title} loading="eager" />}
+      <div class="hero-main-title">{heroMain.title}</div>
+      {heroMain.subtitle && <div class="hero-main-sub">{heroMain.subtitle}</div>}
+      <div class="hero-main-meta">{formatDate(heroMain.date)} · {AUTHOR}</div>
+    </a>
+
+    <div class="hero-side right">
+      {heroSideR.map(post => (
+        <a href={`/blog/${post.slug}`} class="hero-side-post">
+          {post.cover && <img class="hero-side-img" src={post.cover} alt={post.title} loading="eager" />}
+          <div class="hero-side-title">{post.title}</div>
+          <div class="hero-side-meta">{formatDate(post.date)} · {AUTHOR}</div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- ESSAYS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Essays</div>
+      <a href="/types/essay" class="view-all">View all →</a>
+    </div>
+    <div class="essays-row">
+      {essayRow.map(post => (
+        <a href={`/blog/${post.slug}`} class="essay-card">
+          {post.cover && <img class="essay-card-img" src={post.cover} alt={post.title} loading="lazy" />}
+          <div class="essay-card-title">{post.title}</div>
+          <div class="essay-card-meta">{formatDate(post.date)} · {AUTHOR}</div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- BOTTOM 3-COL -->
+  <div class="bottom-section">
+    <div class="bottom-col">
+      <div class="bottom-col-title">
+        <span>Notes</span>
+        <a href="/notes" class="view-all" style="font-size:11px;">View all →</a>
+      </div>
+      {notes.map(note => (
+        <a href={`/blog/${note.slug}`} class="note-card">
+          <div class="note-card-text">{note.body?.replace(/<[^>]+>/g,'').slice(0,140)}</div>
+          <div class="note-card-date">{formatDate(note.date)}</div>
+        </a>
+      ))}
+      <a href="/notes" class="view-more">View more →</a>
+    </div>
+
+    <div class="bottom-col middle">
+      <div class="bottom-col-title"><span>Recent Posts</span></div>
+      {recentPosts.map(post => (
+        <a href={`/blog/${post.slug}`} class="recent-post">
+          <div class="recent-post-body">
+            <div class="recent-post-type">{post.type}</div>
+            <div class="recent-post-title">{post.title}</div>
+            {post.subtitle && <div class="recent-post-sub">{post.subtitle}</div>}
+            <div class="recent-post-meta">{formatDate(post.date)} · {AUTHOR}</div>
+          </div>
+          {post.cover && <img class="recent-post-img" src={post.cover} alt={post.title} loading="lazy" />}
+        </a>
+      ))}
+    </div>
+
+    <div class="bottom-col right">
+      <div class="bottom-col-title">
+        <span>Verse</span>
+        <a href="/types/verse" class="view-all" style="font-size:11px;">View all →</a>
+      </div>
+      {verses.map(verse => (
+        <a href={`/blog/${verse.slug}`} class="verse-card">
+          <div class="verse-card-title">{verse.title}</div>
+          <div class="verse-card-preview">{verse.preview || verse.body?.replace(/<[^>]+>/g,'').slice(0,80)}</div>
+          <div class="verse-card-date">{formatDate(verse.date)}</div>
+        </a>
+      ))}
+      <a href="/types/verse" class="view-more">View more →</a>
+    </div>
+  </div>
+</Base>

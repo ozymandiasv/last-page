@@ -1,0 +1,118 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BLOGS, ESSAYS, NOTES, VERSES, AUTHOR, formatDate as sampleFmt } from '../../lib/data.js';
+import { getBlogs, getEssays, getNotes, getVerses, formatDate, mdToHtml } from '../../lib/content.js';
+
+export function getStaticPaths() {
+  const realPosts = [...getBlogs(), ...getEssays(), ...getNotes(), ...getVerses()];
+  const samplePosts = [...BLOGS, ...ESSAYS, ...NOTES, ...VERSES];
+  const allSlugs = new Set(realPosts.map(p => p.slug));
+  const merged = [
+    ...realPosts,
+    ...samplePosts.filter(p => !allSlugs.has(p.slug))
+  ];
+  return merged.map(post => ({
+    params: { slug: post.slug },
+    props:  { post },
+  }));
+}
+
+const { post } = Astro.props;
+const typeLC = post.type.toLowerCase();
+const isReal = !post.id; // real posts don't have id field from sample data
+const bodyHtml = isReal ? mdToHtml(post.body) : post.body;
+const fmtDate = isReal ? formatDate : sampleFmt;
+const wordCount = (post.body||'').replace(/<[^>]+>/g,'').split(/\s+/).length;
+const readTime = Math.max(1, Math.round(wordCount/200));
+---
+<Base title={`${post.title} — Last Page`} active={typeLC}>
+
+  {(post.type === 'Blog' || post.type === 'Essay') && (
+    <article class="post-wrap">
+      <div class="post-eyebrow">
+        <span class={`badge badge-${typeLC}`}>{post.type}</span>
+        {post.category && <a href={`/categories/${post.category}`} style="color:var(--text3);">{post.category}</a>}
+        <span>·</span>
+        <span>{fmtDate(post.date)}</span>
+        <span>·</span>
+        <span>{readTime} min read</span>
+      </div>
+      <h1 class="post-h1">{post.title}</h1>
+      {post.subtitle && <p class="post-subtitle">{post.subtitle}</p>}
+      {post.cover && (
+        <div class="post-feat-img"><img src={post.cover} alt={post.title} /></div>
+      )}
+      <div class="post-body" set:html={bodyHtml} />
+      {post.tags?.length > 0 && (
+        <div class="post-tags">
+          {post.tags.map(tag => (
+            <span class={`notion-tag tag-${tag.colour}`}>{tag.name}</span>
+          ))}
+        </div>
+      )}
+      <div class="comments-block">
+        <div class="comments-label">Comments</div>
+        <div id="giscus-container"></div>
+      </div>
+    </article>
+  )}
+
+  {post.type === 'Verse' && (
+    <article class="verse-wrap">
+      <h1 class="verse-title">{post.title}</h1>
+      <div class="verse-date">{fmtDate(post.date)}</div>
+      <div class="verse-body" set:html={bodyHtml} />
+      {post.tags?.length > 0 && (
+        <div class="post-tags" style="justify-content:center;margin-top:44px;padding-top:28px;border-top:0.5px solid var(--border2);">
+          {post.tags.map(tag => (
+            <span class={`notion-tag tag-${tag.colour}`}>{tag.name}</span>
+          ))}
+        </div>
+      )}
+      <div class="comments-block" style="text-align:left;">
+        <div class="comments-label">Comments</div>
+        <div id="giscus-container"></div>
+      </div>
+    </article>
+  )}
+
+  {post.type === 'Notes' && (
+    <div class="note-view-wrap">
+      <div class="note-view-box">
+        <div class="note-view-date">{fmtDate(post.date)}</div>
+        <div class="note-view-body">{post.body?.replace(/<[^>]+>/g,'')}</div>
+        {post.tags?.length > 0 && (
+          <div class="post-tags" style="margin-top:20px;padding-top:16px;border-top:0.5px solid var(--border2);">
+            {post.tags.map(tag => (
+              <span class={`notion-tag tag-${tag.colour}`}>{tag.name}</span>
+            ))}
+          </div>
+        )}
+      </div>
+      <div class="comments-block" style="max-width:580px;margin:0 auto;padding:0 6vw;">
+        <div class="comments-label">Comments</div>
+        <div id="giscus-container"></div>
+      </div>
+    </div>
+  )}
+</Base>
+
+<script>
+  const s = document.createElement('script');
+  s.src = 'https://giscus.app/client.js';
+  s.setAttribute('data-repo',            'ozymandiasv/last-page');
+  s.setAttribute('data-repo-id',         'YOUR_REPO_ID');
+  s.setAttribute('data-category',        'Announcements');
+  s.setAttribute('data-category-id',     'YOUR_CATEGORY_ID');
+  s.setAttribute('data-mapping',         'pathname');
+  s.setAttribute('data-strict',          '0');
+  s.setAttribute('data-reactions-enabled','1');
+  s.setAttribute('data-emit-metadata',   '0');
+  s.setAttribute('data-input-position',  'top');
+  s.setAttribute('data-theme',
+    document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+  s.setAttribute('data-lang','en');
+  s.setAttribute('crossorigin','anonymous');
+  s.async = true;
+  document.getElementById('giscus-container')?.appendChild(s);
+</script>

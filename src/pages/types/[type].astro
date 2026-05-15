@@ -1,0 +1,73 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BLOGS, ESSAYS, NOTES, VERSES, AUTHOR, formatDate } from '../../lib/data.js';
+
+export function getStaticPaths() {
+  return ['blog','essay','verse','notes'].map(t => ({ params: { type: t } }));
+}
+
+const { type } = Astro.params;
+const label = type.charAt(0).toUpperCase() + type.slice(1);
+
+const postMap = { blog: BLOGS, essay: ESSAYS, verse: VERSES, notes: NOTES };
+const posts = postMap[type] ?? [];
+---
+<Base title={`${label} — Last Page`} active={type}>
+  <div style="max-width:860px;margin:0 auto;padding:48px 6vw 80px;">
+    <div style="margin-bottom:32px;">
+      <h1 style="font-family:var(--serif);font-size:28px;color:var(--text);margin-bottom:6px;">{label}</h1>
+      <p style="font-size:14px;color:var(--text2);">{posts.length} {posts.length===1?'piece':'pieces'}</p>
+    </div>
+
+    <div class="type-pills" style="margin-bottom:36px;">
+      {['blog','essay','verse','notes'].map(t => (
+        <a href={`/types/${t}`} class={`type-pill${t===type?' active':''}`}>{t}</a>
+      ))}
+    </div>
+
+    {/* Blog / Essay list — image right, text left like recent posts */}
+    {(type === 'blog' || type === 'essay') && (
+      <div>
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}`} class="recent-post" style="padding:20px 0;">
+            <div class="recent-post-body">
+              <div class="recent-post-type">{post.type}</div>
+              <div class="recent-post-title" style="font-size:18px;">{post.title}</div>
+              {post.subtitle && <div class="recent-post-sub">{post.subtitle}</div>}
+              <div class="recent-post-meta">{formatDate(post.date)} · {AUTHOR}</div>
+            </div>
+            {post.cover && (
+              <img class="recent-post-img" src={post.cover} alt={post.title}
+                loading="lazy" style="width:100px;height:100px;" />
+            )}
+          </a>
+        ))}
+      </div>
+    )}
+
+    {/* Verse list */}
+    {type === 'verse' && (
+      <div>
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}`} style="display:block;padding:18px 0;border-bottom:0.5px solid var(--border2);text-decoration:none;color:inherit;">
+            <div style="font-family:var(--serif);font-style:italic;font-size:18px;color:var(--text);margin-bottom:6px;">{post.title}</div>
+            <div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:8px;">{post.preview}</div>
+            <div style="font-size:11px;color:var(--text3);">{formatDate(post.date)}</div>
+          </a>
+        ))}
+      </div>
+    )}
+
+    {/* Notes feed */}
+    {type === 'notes' && (
+      <div>
+        {posts.map(note => (
+          <a href={`/blog/${note.slug}`} class="notes-feed-card">
+            <div class="notes-feed-text">{note.body}</div>
+            <div class="notes-feed-meta">{formatDate(note.date)}</div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Base>
