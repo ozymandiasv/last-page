@@ -499,6 +499,14 @@ export const prerender = true;
     }
     btn.disabled = false;
   }
-</script>
-</body>
-</html>
+
+// expose handlers to inline HTML in module script
+window.login = login;
+window.logout = logout;
+window.toggleEye = toggleEye;
+window.openEditor = openEditor;
+window.backToDash = backToDash;
+window.wrap = wrap;
+window.insertLine = insertLine;
+window.insertLink = insertLink;
+window.publish = publish;
