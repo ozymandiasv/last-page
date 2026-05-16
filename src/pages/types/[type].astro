@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { BLOGS, ESSAYS, NOTES, VERSES, AUTHOR, formatDate } from '../../lib/data.js';
+import { getBlogs, getEssays, getVerses, getNotes } from '../../lib/content.js';
 
 export function getStaticPaths() {
   return ['blog','essay','verse','notes'].map(t => ({ params: { type: t } }));
@@ -9,7 +10,29 @@ export function getStaticPaths() {
 const { type } = Astro.params;
 const label = type.charAt(0).toUpperCase() + type.slice(1);
 
-const postMap = { blog: BLOGS, essay: ESSAYS, verse: VERSES, notes: NOTES };
+const realMap = {
+  blog: getBlogs(),
+  essay: getEssays(),
+  verse: getVerses(),
+  notes: getNotes()
+};
+
+const sampleMap = {
+  blog: BLOGS,
+  essay: ESSAYS,
+  verse: VERSES,
+  notes: NOTES
+};
+
+const realSlugs = new Set((realMap[type] ?? []).map(p => p.slug));
+
+const postMap = {
+  blog: [...realMap.blog, ...sampleMap.blog.filter(p => !realSlugs.has(p.slug))],
+  essay: [...realMap.essay, ...sampleMap.essay.filter(p => !realSlugs.has(p.slug))],
+  verse: [...realMap.verse, ...sampleMap.verse.filter(p => !realSlugs.has(p.slug))],
+  notes: [...realMap.notes, ...sampleMap.notes.filter(p => !realSlugs.has(p.slug))]
+};
+
 const posts = postMap[type] ?? [];
 ---
 <Base title={`${label} — Last Page`} active={type}>
