@@ -5,6 +5,7 @@ date: "2026-05-19"
 published: true
 subtitle: "Lewandowski didn't get the throne. He got something quieter, and maybe more honest."
 category: "Sports and Events"
+cover: "https://platform.barcablaugranes.com/wp-content/uploads/sites/21/2026/05/gettyimages-2276770528.jpg?quality=90&strip=all&crop=0%2C0.02498750624688%2C100%2C99.950024987506&w=1440"
 tags:
   - Football
   - Robert Lewandowski
