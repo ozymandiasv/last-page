@@ -1,11 +1,16 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { ALL_POSTS, CATEGORIES, AUTHOR, formatDate } from '../../lib/data.js';
+import { CATEGORIES, formatDate } from '../../lib/data.js';
+import { getBlogs, getEssays, getVerses, getNotes } from '../../lib/content.js';
 
 export function getStaticPaths() {
-  return CATEGORIES.map(cat => ({
+  const realPosts = [...getBlogs(), ...getEssays(), ...getVerses(), ...getNotes()];
+  const realCats  = [...new Set(realPosts.map(p => p.category).filter(Boolean))];
+  const allCats   = [...new Set([...CATEGORIES, ...realCats])];
+
+  return allCats.map(cat => ({
     params: { category: cat },
-    props:  { cat, posts: ALL_POSTS.filter(p => p.category === cat) },
+    props:  { cat, posts: realPosts.filter(p => p.category === cat) },
   }));
 }
 
@@ -27,6 +32,10 @@ const grouped = groupByMonth(posts);
     <a href="/archive" style="font-size:13px;color:var(--text3);display:block;margin-bottom:12px;">← Archive</a>
     <h1 class="archive-title">{cat}</h1>
     <p class="archive-sub">{posts.length} {posts.length===1?'piece':'pieces'}</p>
+
+    {posts.length === 0 && (
+      <p style="color:var(--text3);font-size:14px;margin-top:24px;">No posts in this category yet.</p>
+    )}
 
     {Array.from(grouped.entries()).map(([month, mposts]) => (
       <>
