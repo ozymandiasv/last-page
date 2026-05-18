@@ -51,9 +51,19 @@ const readTime = Math.max(1, Math.round(wordCount/200));
         </div>
       )}
       <div class="comments-block">
-        <div class="comments-label">Comments</div>
-        <div id="giscus-container"></div>
-      </div>
+  <div class="comments-label">Leave a comment</div>
+  <form action="https://formspree.io/f/xykvywjj" method="POST" style="display:flex;flex-direction:column;gap:12px;">
+    <input type="hidden" name="post" value={post.title} />
+    <input type="text" name="name" placeholder="Your name" required
+      style="padding:10px 14px;border:0.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--text);outline:none;" />
+    <textarea name="message" placeholder="Your comment…" required rows="4"
+      style="padding:10px 14px;border:0.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--text);outline:none;resize:vertical;"></textarea>
+    <button type="submit"
+      style="padding:10px 20px;background:var(--text);color:var(--bg);border:none;border-radius:8px;font-size:14px;cursor:pointer;font-family:var(--sans);width:fit-content;">
+      Send comment
+    </button>
+  </form>
+</div>
     </article>
   )}
 
