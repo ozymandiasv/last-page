@@ -4,7 +4,7 @@ type: "Essay"
 date: "2026-05-21"
 published: true
 subtitle: "On education, dynasty, and the democracy we keep choosing."
-category: "Life"
+category: "State and Power"
 cover: "https://images.unsplash.com/photo-1711153455834-dfb509b965aa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 tags:
   - Indian National Congress
