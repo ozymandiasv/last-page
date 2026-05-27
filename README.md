@@ -251,15 +251,6 @@ last-page/
 
 | Item | Details |
 |------|---------|
-| **Live Site** | https://last-page-ruddy.vercel.app |
-| **Admin Panel** | `/admin` (login required) |
-| **Admin Password** | `lastpage2025` |
-| **GitHub Repo** | https://github.com/ozymandiasv/last-page |
-| **Deploy Platform** | Vercel (auto-deploy on push) |
-| **Framework** | Astro 4 |
-| **Content Storage** | GitHub (markdown files) |
-| **Social Links** | X: @theozymandiasiv, Reddit: u/spellriddle |
-
 ---
 
 **Last Updated:** May 15, 2026  
