@@ -4,7 +4,7 @@ type: "Essay"
 date: "2026-05-29"
 published: true
 subtitle: "Art does not owe us morality, but society has a habit of stealing morality from art anyway"
-category: "Life"
+category: "Literature and Media"
 cover: "https://images.unsplash.com/photo-1550399105-c4db5fb85c18?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 tags:
   - Aesthetics
