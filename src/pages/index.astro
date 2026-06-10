@@ -171,61 +171,81 @@ const postDates = [...new Set(allRealPosts.map(p => p.date ? p.date.slice(0,10) 
     margin-top: 28px;
     border: 0.5px solid var(--border);
     border-radius: 10px;
-    padding: 16px 14px 14px;
+    padding: 14px 12px 12px;
     background: var(--bg);
   }
   .cal-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .cal-nav-btn {
     background: none;
     border: none;
-    color: var(--text2);
-    font-size: 18px;
+    color: var(--text3);
+    font-size: 15px;
     cursor: pointer;
-    padding: 2px 6px;
+    padding: 2px 4px;
     line-height: 1;
   }
   .cal-nav-btn:hover { color: var(--text); }
   .cal-month-label {
-    font-family: var(--serif);
-    font-size: 13px;
-    color: var(--text);
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--text2);
     font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
   .cal-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 1px;
     text-align: center;
   }
   .cal-day-hdr {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text3);
-    padding: 3px 0;
+    padding: 2px 0 4px;
     font-weight: 500;
     text-transform: uppercase;
+    letter-spacing: 0.03em;
   }
   .cal-day {
-    font-size: 11px;
-    padding: 4px 2px;
+    font-size: 10px;
+    padding: 3px 1px 5px;
     border-radius: 4px;
-    color: var(--text2);
+    color: var(--text3);
     cursor: default;
     line-height: 1.2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
   }
   .cal-day.has-post {
-    background: var(--text);
-    color: var(--bg);
+    color: var(--text);
     font-weight: 600;
     cursor: pointer;
   }
-  .cal-day.has-post:hover { opacity: 0.8; }
-  .cal-day.today { outline: 1.5px solid var(--text3); }
-  .cal-day.empty { color: transparent; }
+  .cal-day.has-post::after {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--text);
+  }
+  .cal-day.has-post:hover { opacity: 0.65; }
+  .cal-day.today { color: var(--text); font-weight: 600; }
+  .cal-day.today .cal-day-num {
+    outline: 1px solid var(--text3);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+  .cal-day.empty { color: transparent; pointer-events: none; }
 
   /* About box — matches calendar width */
   .home-about-box {
@@ -342,12 +362,11 @@ const postDates = [...new Set(allRealPosts.map(p => p.date ? p.date.slice(0,10) 
       for (let d = 1; d <= daysInMonth; d++) {
         const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
         const el = document.createElement('div');
-        el.className = 'cal-day' + (postDates.has(dateStr) ? ' has-post' : '');
-        if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-          el.classList.add('today');
-        }
-        el.textContent = d;
-        if (postDates.has(dateStr)) {
+        const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        const hasPost = postDates.has(dateStr);
+        el.className = 'cal-day' + (hasPost ? ' has-post' : '') + (isToday ? ' today' : '');
+        el.innerHTML = `<span class="cal-day-num">${d}</span>`;
+        if (hasPost) {
           el.title = 'Posted on ' + new Date(dateStr).toLocaleDateString('en-IN',{month:'short',day:'numeric',year:'numeric'});
         }
         grid.appendChild(el);
