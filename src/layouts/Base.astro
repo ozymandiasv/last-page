@@ -1,7 +1,9 @@
 ---
 const { title = 'Last Page', active = '' } = Astro.props;
 import { CATEGORIES } from '../lib/data.js';
+import Analytics from '@vercel/analytics/astro';
 ---
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -191,5 +193,6 @@ import { CATEGORIES } from '../lib/data.js';
     });
   }
 </script>
+<Analytics />
 </body>
 </html>
