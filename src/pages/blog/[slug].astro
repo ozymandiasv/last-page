@@ -1,10 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { BLOGS, ESSAYS, NOTES, VERSES, AUTHOR, formatDate as sampleFmt } from '../../lib/data.js';
-import { getBlogs, getEssays, getNotes, getVerses, formatDate, mdToHtml } from '../../lib/content.js';
+import { getBlogs, getEssays, getNotes, getVerses, getPoems, getStories, formatDate, mdToHtml, verseToHtml } from '../../lib/content.js';
 
 export function getStaticPaths() {
-  const realPosts = [...getBlogs(), ...getEssays(), ...getNotes(), ...getVerses()];
+  const realPosts = [...getBlogs(), ...getEssays(), ...getNotes(), ...getVerses(), ...getPoems(), ...getStories()];
   const samplePosts = [...BLOGS, ...ESSAYS, ...NOTES, ...VERSES];
   const allSlugs = new Set(realPosts.map(p => p.slug));
   const merged = [
@@ -19,15 +19,20 @@ export function getStaticPaths() {
 
 const { post } = Astro.props;
 const typeLC = post.type.toLowerCase();
-const isReal = !post.id; // real posts don't have id field from sample data
-const bodyHtml = isReal ? mdToHtml(post.body) : post.body;
+const isReal = !post.id;
+const isPoem = post.type === 'Poem';
+const isStory = post.type === 'Story';
+const isVerse = post.type === 'Verse';
+const bodyHtml = isReal
+  ? (isPoem || isVerse ? verseToHtml(post.body) : mdToHtml(post.body))
+  : post.body;
 const fmtDate = isReal ? formatDate : sampleFmt;
 const wordCount = (post.body||'').replace(/<[^>]+>/g,'').split(/\s+/).length;
 const readTime = Math.max(1, Math.round(wordCount/200));
 ---
 <Base title={`${post.title} — Last Page`} active={typeLC}>
 
-  {(post.type === 'Blog' || post.type === 'Essay') && (
+  {(post.type === 'Blog' || post.type === 'Essay' || isStory) && (
     <article class="post-wrap">
       <div class="post-eyebrow">
         <span class={`badge badge-${typeLC}`}>{post.type}</span>
@@ -51,23 +56,23 @@ const readTime = Math.max(1, Math.round(wordCount/200));
         </div>
       )}
       <div class="comments-block">
-  <div class="comments-label">Leave a comment</div>
-  <form action="https://formspree.io/f/xykvywjj" method="POST" style="display:flex;flex-direction:column;gap:12px;">
-    <input type="hidden" name="post" value={post.title} />
-    <input type="text" name="name" placeholder="Your name" required
-      style="padding:10px 14px;border:0.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--text);outline:none;" />
-    <textarea name="message" placeholder="Your comment…" required rows="4"
-      style="padding:10px 14px;border:0.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--text);outline:none;resize:vertical;"></textarea>
-    <button type="submit"
-      style="padding:10px 20px;background:var(--text);color:var(--bg);border:none;border-radius:8px;font-size:14px;cursor:pointer;font-family:var(--sans);width:fit-content;">
-      Send comment
-    </button>
-  </form>
-</div>
+        <div class="comments-label">Leave a comment</div>
+        <form action="https://formspree.io/f/xykvywjj" method="POST" style="display:flex;flex-direction:column;gap:12px;">
+          <input type="hidden" name="post" value={post.title} />
+          <input type="text" name="name" placeholder="Your name" required
+            style="padding:10px 14px;border:0.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--text);outline:none;" />
+          <textarea name="message" placeholder="Your comment…" required rows="4"
+            style="padding:10px 14px;border:0.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--text);outline:none;resize:vertical;"></textarea>
+          <button type="submit"
+            style="padding:10px 20px;background:var(--text);color:var(--bg);border:none;border-radius:8px;font-size:14px;cursor:pointer;font-family:var(--sans);width:fit-content;">
+            Send comment
+          </button>
+        </form>
+      </div>
     </article>
   )}
 
-  {post.type === 'Verse' && (
+  {(isPoem || isVerse) && (
     <article class="verse-wrap">
       <h1 class="verse-title">{post.title}</h1>
       <div class="verse-date">{fmtDate(post.date)}</div>
@@ -106,6 +111,10 @@ const readTime = Math.max(1, Math.round(wordCount/200));
     </div>
   )}
 </Base>
+
+<style>
+  .verse-stanza { white-space: pre-line; margin-bottom: 1.4em; }
+</style>
 
 <script>
   const s = document.createElement('script');

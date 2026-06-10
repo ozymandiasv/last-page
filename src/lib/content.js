@@ -20,7 +20,6 @@ function parseFrontmatter(raw) {
   const fm = match[1];
   const body = match[2].trim();
   const data = {};
-  // parse simple key: "value" and key:\n  - item lists
   const lines = fm.split('\n');
   let i = 0;
   while (i < lines.length) {
@@ -61,13 +60,15 @@ function readDir(dir) {
 
 const ROOT = process.cwd();
 
-export function getBlogs()  { return readDir(join(ROOT, 'src/content/blogs')); }
-export function getEssays() { return readDir(join(ROOT, 'src/content/essays')); }
-export function getVerses() { return readDir(join(ROOT, 'src/content/verses')); }
-export function getNotes()  { return readDir(join(ROOT, 'src/content/notes')); }
+export function getBlogs()   { return readDir(join(ROOT, 'src/content/blogs')); }
+export function getEssays()  { return readDir(join(ROOT, 'src/content/essays')); }
+export function getVerses()  { return readDir(join(ROOT, 'src/content/verses')); }
+export function getNotes()   { return readDir(join(ROOT, 'src/content/notes')); }
+export function getPoems()   { return readDir(join(ROOT, 'src/content/poems')); }
+export function getStories() { return readDir(join(ROOT, 'src/content/stories')); }
 
 export function getAllPosts() {
-  return [...getBlogs(), ...getEssays(), ...getVerses(), ...getNotes()]
+  return [...getBlogs(), ...getEssays(), ...getVerses(), ...getPoems(), ...getStories(), ...getNotes()]
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
@@ -91,4 +92,15 @@ export function mdToHtml(md) {
       if (p.startsWith('<h') || p.startsWith('<ul') || p.startsWith('<blockquote') || p.startsWith('<hr')) return p;
       return `<p>${p}</p>`;
     }).join('\n');
+}
+
+// Convert verse/poem markdown preserving line breaks
+export function verseToHtml(md) {
+  if (!md) return '';
+  // Split by double newlines (stanza breaks)
+  const stanzas = md.split(/\n\n+/);
+  return stanzas.map(stanza => {
+    const lines = stanza.trim().split('\n');
+    return `<p class="verse-stanza">${lines.join('<br>')}</p>`;
+  }).join('\n');
 }

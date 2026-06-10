@@ -1,8 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import { ALL_POSTS, formatDate } from '../lib/data.js';
+import { ALL_POSTS, formatDate as sampleFmt } from '../lib/data.js';
+import { getAllPosts, formatDate } from '../lib/content.js';
 
-const posts = ALL_POSTS;
+const realPosts = getAllPosts();
+const realSlugs = new Set(realPosts.map(p => p.slug));
+const posts = [...realPosts, ...ALL_POSTS.filter(p => !realSlugs.has(p.slug))];
 
 function groupByMonth(list) {
   const map = new Map();
@@ -23,7 +26,7 @@ const grouped = groupByMonth(posts);
 
     <div class="type-pills" style="margin-bottom:32px;">
       <a href="#" class="type-pill active" id="pill-all">all</a>
-      {['blog','essay','verse','notes'].map(t => (
+      {['blog','essay','verse','poem','story','notes'].map(t => (
         <a href="#" class="type-pill" data-filter={t}>{t}</a>
       ))}
     </div>
@@ -33,12 +36,13 @@ const grouped = groupByMonth(posts);
         <>
           <div class="archive-month">{month}</div>
           {mposts.map(p => {
-            const typeLC = p.type.toLowerCase();
-            const showCat = (p.type === 'Blog' || p.type === 'Essay') && p.category;
+            const typeLC = p.type?.toLowerCase() || '';
+            const showCat = (p.type === 'Blog' || p.type === 'Essay' || p.type === 'Story') && p.category;
+            const fmtDate = p.id ? sampleFmt : formatDate;
             return (
               <a href={`/blog/${p.slug}`} class="archive-row" data-type={typeLC}>
                 <span class="archive-date">{new Date(p.date).getDate()}</span>
-                <span class={`archive-row-title${p.type==='Verse'?' verse-t':''}`}>
+                <span class={`archive-row-title${p.type==='Verse'||p.type==='Poem'?' verse-t':''}`}>
                   {p.title || p.body?.replace(/<[^>]+>/g,'').slice(0,60) + '…'}
                 </span>
                 <span class={`badge badge-${typeLC}`}>{p.type}</span>
@@ -53,9 +57,9 @@ const grouped = groupByMonth(posts);
 </Base>
 
 <script>
-  const pills  = document.querySelectorAll('.type-pill[data-filter]');
+  const pills   = document.querySelectorAll('.type-pill[data-filter]');
   const allPill = document.getElementById('pill-all');
-  const rows   = document.querySelectorAll('.archive-row');
+  const rows    = document.querySelectorAll('.archive-row');
 
   function filter(type) {
     rows.forEach(r => {

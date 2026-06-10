@@ -43,6 +43,9 @@ import { CATEGORIES } from '../lib/data.js';
     </div>
 
     <div class="nav-actions">
+      <a href="/search" class="nav-icon" aria-label="Search" title="Search">
+        <i class="ti ti-search"></i>
+      </a>
       <a href="https://x.com/theozymandiasiv" target="_blank" rel="noopener" class="nav-icon" aria-label="Twitter / X">
         <i class="ti ti-brand-x"></i>
       </a>
@@ -64,6 +67,7 @@ import { CATEGORIES } from '../lib/data.js';
       <a href="/notes">Notes</a>
       <a href="/archive">Archive</a>
       <a href="/about">About</a>
+      <a href="/search">Search</a>
       <div style="padding-top:8px;display:flex;gap:12px;">
         <a href="https://x.com/theozymandiasiv" target="_blank" rel="noopener"><i class="ti ti-brand-x"></i></a>
         <a href="https://www.reddit.com/user/spellriddle/" target="_blank" rel="noopener"><i class="ti ti-brand-reddit"></i></a>
@@ -75,6 +79,19 @@ import { CATEGORIES } from '../lib/data.js';
 <style>
   :root{--nav-border:rgba(0,0,0,0.06);}
   .site-nav{border-bottom:0.5px solid var(--nav-border);}
+
+  /* Extra badge types */
+  .badge-poem  { background: #f0e6ff; color: #7c3aed; }
+  .badge-story { background: #fef3c7; color: #b45309; }
+  [data-theme="dark"] .badge-poem  { background: #3b1f6b; color: #d8b4fe; }
+  [data-theme="dark"] .badge-story { background: #4a3000; color: #fcd34d; }
+
+  /* Wider post-wrap for blog/essay/story */
+  .post-wrap { max-width: 860px !important; }
+
+  /* Search icon in nav */
+  .nav-icon { color: var(--text2); text-decoration: none; font-size: 16px; display: flex; align-items: center; }
+  .nav-icon:hover { color: var(--text); }
   .nav-top{padding:18px 5vw;display:flex;justify-content:center;align-items:center;}
   .nav-logo{font-family:var(--serif);font-size:18px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;}
   .nav-logo-main{font-size:20px;letter-spacing:0.06em;font-weight:600}
