@@ -16,11 +16,13 @@ export const prerender = true;
       --text:#1a1a1a;--text2:#555;--text3:#999;
       --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.06);
       --serif:'Lora',Georgia,serif;--sans:'Inter',system-ui,sans-serif;
+      --green:#166534;--green-bg:#dcfce7;
+      --red:#991b1b;--red-bg:#fee2e2;
     }
     html{max-width:100vw;overflow-x:hidden;}
-    body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;max-width:100vw;overflow-x:hidden;}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
 
-    /* Login */
+    /* ── LOGIN ── */
     #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;}
     .login-box{
       background:var(--bg2);border:0.5px solid var(--border2);
@@ -44,62 +46,51 @@ export const prerender = true;
     }
     .btn:hover{opacity:.85;}
     .login-error{color:#dc2626;font-size:13px;margin-top:10px;display:none;}
-    .token-wrap{position:relative;}
-    .token-wrap input{padding-right:52px;}
-    .token-eye{
+    .pw-wrap{position:relative;}
+    .pw-wrap input{padding-right:52px;}
+    .pw-eye{
       position:absolute;right:12px;top:50%;transform:translateY(-50%);
       background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;
     }
     .hint{font-size:11px;color:var(--text3);margin-top:20px;padding-top:16px;border-top:0.5px solid var(--border2);line-height:1.6;}
     .hint a{color:var(--text2);}
 
-    /* Nav */
-    #adminScreen{display:none;pointer-events:none;}
+    /* ── ADMIN SHELL ── */
+    #adminScreen{display:none;}
     .admin-nav{
       background:var(--bg2);border-bottom:0.5px solid var(--border2);
       padding:0 5vw;height:52px;display:flex;align-items:center;
       justify-content:space-between;position:sticky;top:0;z-index:10;
     }
-    .nav-toggle{
-      display:none;width:34px;height:34px;border:none;background:transparent;
-      cursor:pointer;padding:0;position:relative;
-    }
-    .nav-toggle span{
-      display:block;width:24px;height:2px;background:var(--text);
-      transition:transform .2s ease, opacity .2s ease;position:absolute;left:5px;
-    }
-    .nav-toggle span:nth-child(1){top:8px;}
-    .nav-toggle span:nth-child(2){top:15px;}
-    .nav-toggle span:nth-child(3){top:22px;}
-    .nav-toggle.open span:nth-child(1){transform:rotate(45deg);top:15px;}
-    .nav-toggle.open span:nth-child(2){opacity:0;}
-    .nav-toggle.open span:nth-child(3){transform:rotate(-45deg);top:15px;}
     .admin-logo{font-family:var(--serif);font-size:16px;}
     .nav-actions{display:flex;gap:10px;align-items:center;}
     .nav-btn{
       padding:7px 14px;border-radius:8px;border:0.5px solid var(--border);
       background:transparent;color:var(--text2);font-size:12px;
-      cursor:pointer;font-family:var(--sans);transition:all .15s;text-decoration:none;display:inline-block;
+      cursor:pointer;font-family:var(--sans);transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
     }
     .nav-btn:hover{background:var(--bg3);color:var(--text);}
     .nav-btn.primary{background:var(--text);color:white;border-color:var(--text);}
     .nav-btn.primary:hover{opacity:.85;}
-    .nav-menu{
-      display:none;position:absolute;top:100%;left:0;right:0;
-      background:var(--bg2);border-bottom:0.5px solid var(--border2);
-      padding:12px 5vw 16px;box-shadow:0 10px 24px rgba(0,0,0,0.08);
-    }
-    .nav-menu.open{display:block;}
-    .nav-menu .nav-btn{
-      display:block;width:100%;text-align:left;margin-bottom:10px;
-    }
-    .nav-menu .nav-btn:last-child{margin-bottom:0;}
 
-    /* Dashboard */
-    #dashboard{max-width:780px;margin:0 auto;padding:48px 5vw 80px;}
+    /* ── TABS ── */
+    .admin-tabs{
+      display:flex;gap:0;border-bottom:0.5px solid var(--border2);
+      background:var(--bg2);padding:0 5vw;
+    }
+    .tab-btn{
+      padding:12px 18px;font-size:13px;color:var(--text3);
+      background:none;border:none;border-bottom:2px solid transparent;
+      cursor:pointer;font-family:var(--sans);transition:all .15s;margin-bottom:-0.5px;
+    }
+    .tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+    .tab-btn:hover:not(.active){color:var(--text2);}
+
+    /* ── DASHBOARD ── */
+    #tabDashboard{max-width:780px;margin:0 auto;padding:48px 5vw 80px;}
     .dash-title{font-family:var(--serif);font-size:26px;margin-bottom:6px;}
     .dash-sub{font-size:14px;color:var(--text2);margin-bottom:36px;}
-    .type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+    .type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
     .type-card{
       background:var(--bg2);border:0.5px solid var(--border2);
       border-radius:14px;padding:24px 20px;cursor:pointer;
@@ -110,16 +101,55 @@ export const prerender = true;
     .type-card-name{font-family:var(--serif);font-size:17px;color:var(--text);margin-bottom:4px;}
     .type-card-desc{font-size:12px;color:var(--text3);}
 
-    /* Editor */
-    #editor{display:none;max-width:1000px;margin:0 auto;padding:32px 5vw 80px;}
+    /* ── POSTS LIST ── */
+    #tabPosts{max-width:860px;margin:0 auto;padding:32px 5vw 80px;}
+    .posts-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+    .posts-title{font-family:var(--serif);font-size:22px;}
+    .posts-filter{display:flex;gap:6px;flex-wrap:wrap;}
+    .filter-btn{
+      padding:5px 12px;border-radius:20px;border:0.5px solid var(--border);
+      background:transparent;color:var(--text3);font-size:12px;
+      cursor:pointer;font-family:var(--sans);transition:all .15s;
+    }
+    .filter-btn.active{background:var(--text);color:white;border-color:var(--text);}
+    .posts-search{
+      width:100%;padding:9px 14px 9px 36px;border:0.5px solid var(--border);
+      border-radius:8px;font-size:13px;background:var(--bg2);color:var(--text);
+      outline:none;font-family:var(--sans);margin-bottom:16px;
+    }
+    .posts-search-wrap{position:relative;margin-bottom:16px;}
+    .posts-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px;}
+    .post-row{
+      display:flex;align-items:center;gap:12px;padding:14px 0;
+      border-bottom:0.5px solid var(--border2);cursor:pointer;
+      transition:background .1s;text-decoration:none;color:inherit;
+    }
+    .post-row:hover .post-row-title{color:var(--text);text-decoration:underline;}
+    .post-row-type{
+      font-size:10px;padding:3px 7px;border-radius:4px;white-space:nowrap;
+      background:var(--bg3);color:var(--text3);font-weight:500;min-width:44px;text-align:center;
+    }
+    .post-row-title{font-size:14px;color:var(--text2);flex:1;line-height:1.4;}
+    .post-row-date{font-size:11px;color:var(--text3);white-space:nowrap;}
+    .post-row-edit{
+      padding:5px 10px;border-radius:6px;border:0.5px solid var(--border);
+      background:transparent;color:var(--text3);font-size:11px;
+      cursor:pointer;font-family:var(--sans);white-space:nowrap;
+    }
+    .post-row-edit:hover{background:var(--text);color:white;border-color:var(--text);}
+    #postsLoading{text-align:center;padding:40px;color:var(--text3);font-size:14px;}
+    #postsEmpty{text-align:center;padding:40px;color:var(--text3);font-size:14px;display:none;}
+
+    /* ── EDITOR ── */
+    #tabEditor{display:none;max-width:1000px;margin:0 auto;padding:32px 5vw 80px;}
     .editor-top{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
     .back-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:4px;}
     .editor-type{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
-
+    .editor-editing-badge{
+      font-size:11px;background:#fef3c7;color:#b45309;
+      padding:3px 9px;border-radius:20px;margin-left:4px;
+    }
     .editor-layout{display:grid;grid-template-columns:1fr 260px;gap:24px;align-items:start;}
-
-    /* Main writing area */
-    .writing-area{}
     .title-inp{
       width:100%;border:none;background:transparent;
       font-family:var(--serif);font-size:clamp(22px,3vw,30px);
@@ -133,7 +163,6 @@ export const prerender = true;
       color:var(--text2);outline:none;margin-bottom:18px;
     }
     .subtitle-inp::placeholder{color:var(--text3);}
-
     .toolbar{
       display:flex;gap:3px;flex-wrap:wrap;
       padding:7px 10px;background:var(--bg3);
@@ -146,7 +175,6 @@ export const prerender = true;
     }
     .tb:hover{background:var(--bg2);color:var(--text);}
     .tb-sep{width:0.5px;background:var(--border);margin:0 3px;align-self:stretch;}
-
     .body-inp{
       width:100%;min-height:420px;border:0.5px solid var(--border2);
       border-radius:10px;padding:20px;font-family:var(--sans);
@@ -155,6 +183,42 @@ export const prerender = true;
       transition:border-color .15s;
     }
     .body-inp:focus{border-color:rgba(0,0,0,0.18);}
+
+    /* Comments section in editor */
+    .comments-editor{margin-top:24px;}
+    .comments-editor-title{
+      font-size:11px;color:var(--text3);text-transform:uppercase;
+      letter-spacing:.08em;margin-bottom:12px;padding-top:20px;
+      border-top:0.5px solid var(--border2);
+    }
+    .comment-item{
+      background:var(--bg2);border:0.5px solid var(--border2);
+      border-radius:8px;padding:12px 14px;margin-bottom:10px;
+      position:relative;
+    }
+    .comment-item-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px;}
+    .comment-item-date{font-size:11px;color:var(--text3);margin-bottom:6px;}
+    .comment-item-text{font-size:13px;color:var(--text2);line-height:1.6;}
+    .comment-del{
+      position:absolute;top:10px;right:10px;background:none;border:none;
+      color:var(--text3);cursor:pointer;font-size:14px;padding:2px 4px;
+    }
+    .comment-del:hover{color:#dc2626;}
+    .add-comment-form{
+      background:var(--bg2);border:0.5px solid var(--border2);
+      border-radius:8px;padding:14px;margin-top:8px;
+    }
+    .add-comment-form input,.add-comment-form textarea{
+      width:100%;padding:8px 10px;border:0.5px solid var(--border);
+      border-radius:6px;font-family:var(--sans);font-size:13px;
+      background:var(--bg);color:var(--text);outline:none;margin-bottom:8px;
+    }
+    .add-comment-form textarea{min-height:64px;resize:vertical;}
+    .add-comment-btn{
+      padding:7px 14px;border-radius:6px;border:none;
+      background:var(--text);color:white;font-size:12px;
+      cursor:pointer;font-family:var(--sans);
+    }
 
     /* Sidebar */
     .sidebar-card{
@@ -173,7 +237,6 @@ export const prerender = true;
     }
     .sf input:focus,.sf select:focus,.sf textarea:focus{border-color:rgba(0,0,0,0.2);}
     .sf textarea{min-height:64px;resize:vertical;}
-
     .pub-btn{
       width:100%;padding:12px;border-radius:10px;border:none;
       background:var(--text);color:white;font-size:14px;font-weight:500;
@@ -182,26 +245,19 @@ export const prerender = true;
     }
     .pub-btn:hover{opacity:.85;}
     .pub-btn:disabled{opacity:.45;cursor:not-allowed;}
-
     .status{
       margin-top:10px;padding:10px 14px;border-radius:8px;
       font-size:13px;display:none;line-height:1.5;
     }
-    .status.ok  {background:#dcfce7;color:#166534;display:block;}
-    .status.err {background:#fee2e2;color:#991b1b;display:block;}
+    .status.ok  {background:var(--green-bg);color:var(--green);display:block;}
+    .status.err {background:var(--red-bg);color:var(--red);display:block;}
     .status.loading{background:var(--bg3);color:var(--text2);display:block;}
 
     @media(max-width:680px){
       .editor-layout{grid-template-columns:1fr;}
       .type-grid{grid-template-columns:1fr;}
       .login-box{padding:28px 20px;}
-      .admin-nav{justify-content:center;position:relative;padding:0 12px;}
-      .nav-toggle{display:block;}
-      .nav-actions{display:none;}
-      .admin-logo{margin:0 auto;}
-      .nav-menu{right:12px;left:12px;}
     }
-    /* DEBUG: force hamburger visible on all viewports (temporary) */
   </style>
 </head>
 <body>
@@ -212,21 +268,22 @@ export const prerender = true;
     <div class="login-title">O IV · Last Page</div>
     <div class="login-sub">Admin panel — sign in to write</div>
     <div class="field">
-      <label>Password</label>
-      <input type="password" id="pwInput" placeholder="Enter your password" />
+      <label>Username</label>
+      <input type="text" id="userInput" placeholder="Your username" autocomplete="username" />
     </div>
     <div class="field">
-      <label>GitHub Token</label>
-      <div class="token-wrap">
-        <input type="password" id="tokenInput" placeholder="ghp_... or github_pat_..." />
-        <button class="token-eye" onclick="toggleEye()" id="eyeBtn"><i class="ti ti-eye"></i></button>
+      <label>GitHub Token (Password)</label>
+      <div class="pw-wrap">
+        <input type="password" id="tokenInput" placeholder="ghp_... or github_pat_..." autocomplete="current-password" />
+        <button class="pw-eye" onclick="toggleEye()" id="eyeBtn"><i class="ti ti-eye"></i></button>
       </div>
     </div>
     <button class="btn" onclick="login()">Sign In</button>
-    <div class="login-error" id="loginErr">Wrong password.</div>
+    <div class="login-error" id="loginErr">Wrong username or token.</div>
     <div class="hint">
-      Your GitHub token needs <strong>repo</strong> scope.<br>
-      <a href="https://github.com/settings/tokens" target="_blank">Generate one here →</a>
+      Use your GitHub username + a personal access token with <strong>repo</strong> scope as the password.<br>
+      Apple Passwords will save this automatically.<br>
+      <a href="https://github.com/settings/tokens" target="_blank">Generate token here →</a>
     </div>
   </div>
 </div>
@@ -234,22 +291,20 @@ export const prerender = true;
 <!-- ADMIN -->
 <div id="adminScreen">
   <nav class="admin-nav">
-    <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
     <div class="admin-logo">Last Page · Admin</div>
     <div class="nav-actions">
-      <a href="/" target="_blank" class="nav-btn">View site →</a>
-      <button class="nav-btn" onclick="logout()">Sign out</button>
-    </div>
-    <div class="nav-menu" id="navMenu">
-      <a href="/" target="_blank" class="nav-btn">View site →</a>
+      <a href="/" target="_blank" class="nav-btn"><i class="ti ti-external-link"></i> View site</a>
       <button class="nav-btn" onclick="logout()">Sign out</button>
     </div>
   </nav>
 
-  <!-- Dashboard -->
-  <div id="dashboard">
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="switchTab('Dashboard')" id="tabBtnDashboard">Write</button>
+    <button class="tab-btn" onclick="switchTab('Posts')" id="tabBtnPosts">All Posts</button>
+  </div>
+
+  <!-- WRITE TAB -->
+  <div id="tabDashboard">
     <h1 class="dash-title">What are you writing?</h1>
     <p class="dash-sub">Choose a format to start.</p>
     <div class="type-grid">
@@ -263,10 +318,15 @@ export const prerender = true;
         <div class="type-card-name">Essay</div>
         <div class="type-card-desc">Deep thoughts, long form arguments</div>
       </button>
-      <button class="type-card" onclick="openEditor('Verse')">
+      <button class="type-card" onclick="openEditor('Poem')">
         <div class="type-card-icon"><i class="ti ti-feather"></i></div>
-        <div class="type-card-name">Verse</div>
-        <div class="type-card-desc">Poetry, fragments, verse</div>
+        <div class="type-card-name">Poem</div>
+        <div class="type-card-desc">Poetry, verse, fragments</div>
+      </button>
+      <button class="type-card" onclick="openEditor('Story')">
+        <div class="type-card-icon"><i class="ti ti-book"></i></div>
+        <div class="type-card-name">Story</div>
+        <div class="type-card-desc">Fiction, narrative, prose</div>
       </button>
       <button class="type-card" onclick="openEditor('Notes')">
         <div class="type-card-icon"><i class="ti ti-message-circle"></i></div>
@@ -276,11 +336,34 @@ export const prerender = true;
     </div>
   </div>
 
-  <!-- Editor -->
-  <div id="editor">
+  <!-- ALL POSTS TAB -->
+  <div id="tabPosts" style="display:none;">
+    <div class="posts-header">
+      <div class="posts-title">All Posts</div>
+      <div class="posts-filter" id="postsFilter">
+        <button class="filter-btn active" data-type="all">All</button>
+        <button class="filter-btn" data-type="Blog">Blog</button>
+        <button class="filter-btn" data-type="Essay">Essay</button>
+        <button class="filter-btn" data-type="Poem">Poem</button>
+        <button class="filter-btn" data-type="Story">Story</button>
+        <button class="filter-btn" data-type="Notes">Notes</button>
+      </div>
+    </div>
+    <div class="posts-search-wrap">
+      <span class="posts-search-icon"><i class="ti ti-search"></i></span>
+      <input class="posts-search" id="postsSearch" placeholder="Search posts…" oninput="filterPosts()" />
+    </div>
+    <div id="postsLoading"><i class="ti ti-loader"></i> Loading posts…</div>
+    <div id="postsList"></div>
+    <div id="postsEmpty">No posts found.</div>
+  </div>
+
+  <!-- EDITOR TAB -->
+  <div id="tabEditor">
     <div class="editor-top">
       <button class="back-btn" onclick="backToDash()"><i class="ti ti-arrow-left"></i></button>
       <span class="editor-type" id="editorTypeLabel">Blog</span>
+      <span class="editor-editing-badge" id="editingBadge" style="display:none;">Editing</span>
     </div>
 
     <div class="editor-layout">
@@ -303,6 +386,17 @@ export const prerender = true;
         </div>
 
         <textarea class="body-inp" id="postBody" placeholder="Start writing…"></textarea>
+
+        <!-- COMMENTS EDITOR -->
+        <div class="comments-editor" id="commentsEditor" style="display:none;">
+          <div class="comments-editor-title">Comments</div>
+          <div id="commentsList"></div>
+          <div class="add-comment-form">
+            <input type="text" id="newCommentName" placeholder="Commenter name" />
+            <textarea id="newCommentText" placeholder="Comment text…"></textarea>
+            <button class="add-comment-btn" onclick="addComment()">Add Comment</button>
+          </div>
+        </div>
       </div>
 
       <div class="sidebar">
@@ -340,7 +434,7 @@ export const prerender = true;
         </div>
 
         <button class="pub-btn" id="pubBtn" onclick="publish()">
-          <i class="ti ti-send"></i> Publish
+          <i class="ti ti-send"></i> <span id="pubBtnLabel">Publish</span>
         </button>
         <div class="status" id="statusMsg"></div>
       </div>
@@ -349,26 +443,39 @@ export const prerender = true;
 </div>
 
 <script>
-  const ADMIN_PASSWORD = 'lastpage2025';
   const GITHUB_REPO   = 'ozymandiasv/last-page';
   const GITHUB_BRANCH = 'main';
-  let currentType = 'Blog';
+  const ADMIN_USER    = 'ozymandiasv'; // GitHub username
+
   let ghToken = '';
+  let currentType = 'Blog';
+  let editingPath = null;   // path of file being edited
+  let editingSha  = null;   // sha of file being edited
+  let comments    = [];     // array of {name, date, text}
+  let allPosts    = [];     // loaded from GitHub API
+  let activeFilter = 'all';
 
   // ── Auth ──
   function login() {
-    const pw    = document.getElementById('pwInput').value;
+    const user  = document.getElementById('userInput').value.trim();
     const token = document.getElementById('tokenInput').value.trim();
-    if (pw !== ADMIN_PASSWORD) {
-      document.getElementById('loginErr').style.display = 'block'; return;
-    }
-    if (!token) { alert('Please enter your GitHub token.'); return; }
+    if (!user || !token) { showErr('Please enter your username and token.'); return; }
+    if (user !== ADMIN_USER) { showErr('Wrong username or token.'); return; }
     ghToken = token;
+    sessionStorage.setItem('lp_user', user);
     sessionStorage.setItem('lp_gh', token);
-    show('adminScreen'); hide('loginScreen'); setToday();
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'block';
+    setToday();
   }
 
-  function logout() { sessionStorage.removeItem('lp_gh'); location.reload(); }
+  function showErr(msg) {
+    const el = document.getElementById('loginErr');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function logout() { sessionStorage.clear(); location.reload(); }
 
   function toggleEye() {
     const inp = document.getElementById('tokenInput');
@@ -378,51 +485,187 @@ export const prerender = true;
   }
 
   window.addEventListener('DOMContentLoaded', () => {
-    const saved = sessionStorage.getItem('lp_gh');
-    if (saved) { ghToken = saved; show('adminScreen'); hide('loginScreen'); setToday(); }
-    document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key==='Enter') login(); });
+    const savedUser  = sessionStorage.getItem('lp_user');
+    const savedToken = sessionStorage.getItem('lp_gh');
+    if (savedUser === ADMIN_USER && savedToken) {
+      ghToken = savedToken;
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminScreen').style.display = 'block';
+      setToday();
+    }
     document.getElementById('tokenInput').addEventListener('keydown', e => { if (e.key==='Enter') login(); });
+    document.getElementById('userInput').addEventListener('keydown',  e => { if (e.key==='Enter') login(); });
   });
 
   function setToday() {
     document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
   }
 
-  function show(id) {
-    const el = document.getElementById(id);
-    el.style.display = id === 'loginScreen' ? 'flex' : 'block';
-    el.style.pointerEvents = 'auto';
+  // ── Tabs ──
+  function switchTab(name) {
+    ['Dashboard','Posts','Editor'].forEach(t => {
+      document.getElementById(`tab${t}`).style.display = 'none';
+      const btn = document.getElementById(`tabBtn${t}`);
+      if (btn) btn.classList.remove('active');
+    });
+    document.getElementById(`tab${name}`).style.display = 'block';
+    const activeBtn = document.getElementById(`tabBtn${name}`);
+    if (activeBtn) activeBtn.classList.add('active');
+    if (name === 'Posts') loadPosts();
   }
 
-  function hide(id) {
-    const el = document.getElementById(id);
-    el.style.display = 'none';
-    el.style.pointerEvents = 'none';
+  // ── Load Posts from GitHub ──
+  async function loadPosts() {
+    const loading = document.getElementById('postsLoading');
+    const listEl  = document.getElementById('postsList');
+    loading.style.display = 'block';
+    listEl.innerHTML = '';
+    allPosts = [];
+
+    const dirs = ['blogs','essays','poems','stories','notes','verses'];
+    const typeMap = {blogs:'Blog',essays:'Essay',poems:'Poem',stories:'Story',notes:'Notes',verses:'Verse'};
+
+    try {
+      const results = await Promise.all(dirs.map(dir =>
+        fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/src/content/${dir}`, {
+          headers: { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json' }
+        }).then(r => r.ok ? r.json() : []).then(files =>
+          (Array.isArray(files) ? files : [])
+            .filter(f => f.name.endsWith('.md') && f.name !== '.gitkeep')
+            .map(f => ({ name: f.name, path: f.path, sha: f.sha, type: typeMap[dir], dir }))
+        )
+      ));
+      allPosts = results.flat();
+
+      // Fetch dates for sorting — get from frontmatter
+      // We'll do a lightweight fetch of just a few to get dates
+      // For simplicity, sort by name (slug) for now
+      allPosts.sort((a,b) => a.name > b.name ? -1 : 1);
+
+    } catch(e) {
+      listEl.innerHTML = `<div style="color:#dc2626;font-size:14px;padding:20px 0;">Error loading posts: ${e.message}</div>`;
+    }
+
+    loading.style.display = 'none';
+    renderPostsList();
+
+    // Filter buttons
+    document.querySelectorAll('#postsFilter .filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#postsFilter .filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.type;
+        filterPosts();
+      });
+    });
   }
 
-  function toggleMenu() {
-    const menu = document.getElementById('navMenu');
-    const toggle = document.querySelector('.nav-toggle');
-    menu.classList.toggle('open');
-    toggle.classList.toggle('open');
+  function renderPostsList() {
+    const listEl = document.getElementById('postsList');
+    const empty  = document.getElementById('postsEmpty');
+    const q = (document.getElementById('postsSearch')?.value || '').toLowerCase();
+
+    const filtered = allPosts.filter(p => {
+      const typeMatch = activeFilter === 'all' || p.type === activeFilter;
+      const nameMatch = !q || p.name.toLowerCase().includes(q);
+      return typeMatch && nameMatch;
+    });
+
+    empty.style.display = filtered.length === 0 ? 'block' : 'none';
+
+    listEl.innerHTML = filtered.map(p => {
+      const slug = p.name.replace('.md','');
+      const label = slug.replace(/-/g,' ');
+      return `
+        <div class="post-row">
+          <span class="post-row-type">${p.type}</span>
+          <span class="post-row-title">${label}</span>
+          <button class="post-row-edit" onclick="loadPostForEdit('${p.path}','${p.type}','${p.sha}')">
+            <i class="ti ti-edit"></i> Edit
+          </button>
+        </div>`;
+    }).join('');
+  }
+
+  function filterPosts() { renderPostsList(); }
+
+  // ── Load Post for Editing ──
+  async function loadPostForEdit(path, type, sha) {
+    const msg = document.getElementById('statusMsg');
+    openEditor(type, true);
+    editingPath = path;
+    editingSha  = sha;
+    document.getElementById('editingBadge').style.display = '';
+    document.getElementById('pubBtnLabel').textContent = 'Save Changes';
+
+    try {
+      const res  = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
+        headers: { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json' }
+      });
+      const data = await res.json();
+      const raw  = decodeURIComponent(escape(atob(data.content)));
+      editingSha  = data.sha;
+      parseFrontmatter(raw, type);
+    } catch(e) {
+      document.getElementById('statusMsg').className = 'status err';
+      document.getElementById('statusMsg').textContent = 'Error loading post: ' + e.message;
+    }
+  }
+
+  function parseFrontmatter(raw, type) {
+    const match = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+    if (!match) { document.getElementById('postBody').value = raw; return; }
+    const fm   = match[1];
+    const body = match[2].trim();
+
+    // Parse comments section from body
+    const commentsSplit = body.split('\n---comments---\n');
+    document.getElementById('postBody').value = commentsSplit[0].trim();
+    comments = [];
+    if (commentsSplit[1]) {
+      try { comments = JSON.parse(commentsSplit[1]); } catch(e) {}
+    }
+    renderComments();
+
+    // Parse frontmatter fields
+    const get = (key) => {
+      const m = fm.match(new RegExp(`^${key}:\\s*"([^"]*)"`, 'm'));
+      return m ? m[1] : '';
+    };
+    document.getElementById('postTitle').value    = get('title');
+    document.getElementById('postSubtitle').value = get('subtitle');
+    document.getElementById('postDate').value     = get('date');
+    document.getElementById('postTags').value     = (fm.match(/^  - (.+)$/gm) || []).map(l => l.replace('  - ','')).join(', ');
+    document.getElementById('postCover').value    = get('cover');
+    document.getElementById('postPreview').value  = get('preview');
+    const catEl = document.getElementById('postCategory');
+    const cat   = get('category');
+    if (cat) { for (let o of catEl.options) { if (o.value === cat) { o.selected = true; break; } } }
   }
 
   // ── Editor ──
-  function openEditor(type) {
-    currentType = type;
-    hide('dashboard'); show('editor');
+  function openEditor(type, isEdit) {
+    currentType  = type;
+    editingPath  = isEdit ? editingPath : null;
+    editingSha   = isEdit ? editingSha  : null;
+    comments     = isEdit ? comments    : [];
+    if (!isEdit) { document.getElementById('editingBadge').style.display = 'none'; }
+    document.getElementById('pubBtnLabel').textContent = isEdit ? 'Save Changes' : 'Publish';
+
+    switchTab('Editor');
+    document.getElementById('tabBtnEditor') && (document.getElementById('tabBtnEditor').style.display = 'none');
     document.getElementById('editorTypeLabel').textContent = type;
 
-    const isImgType  = type === 'Blog' || type === 'Essay';
-    const isCatType  = type === 'Blog' || type === 'Essay';
-    const isVerse    = type === 'Verse';
-    const isNote     = type === 'Notes';
+    const isWide  = type === 'Blog' || type === 'Essay' || type === 'Story';
+    const isVerse = type === 'Poem' || type === 'Verse';
+    const isNote  = type === 'Notes';
 
-    document.getElementById('coverField').style.display   = isImgType ? '' : 'none';
-    document.getElementById('catField').style.display     = isCatType ? '' : 'none';
-    document.getElementById('prevField').style.display    = isVerse   ? '' : 'none';
-    document.getElementById('postSubtitle').style.display = isImgType ? '' : 'none';
-    document.getElementById('mainToolbar').style.display  = isNote    ? 'none' : '';
+    document.getElementById('coverField').style.display   = isWide  ? '' : 'none';
+    document.getElementById('catField').style.display     = isWide  ? '' : 'none';
+    document.getElementById('prevField').style.display    = isVerse ? '' : 'none';
+    document.getElementById('postSubtitle').style.display = isWide  ? '' : 'none';
+    document.getElementById('mainToolbar').style.display  = isNote  ? 'none' : '';
+    document.getElementById('commentsEditor').style.display = isNote ? 'none' : '';
 
     document.getElementById('postTitle').placeholder =
       isNote ? 'Internal title (not shown publicly)' : 'Title';
@@ -430,16 +673,49 @@ export const prerender = true;
       isNote  ? 'Your note — a thought, an observation…' :
       isVerse ? 'Write your verse here…' : 'Start writing…';
 
+    if (!isEdit) {
+      ['postTitle','postSubtitle','postBody','postTags','postCover','postPreview']
+        .forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+      renderComments();
+      setToday();
+    }
     document.getElementById('postTitle').focus();
   }
 
   function backToDash() {
-    hide('editor'); show('dashboard');
-    ['postTitle','postSubtitle','postBody','postTags','postCover','postPreview']
-      .forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+    editingPath = null; editingSha = null; comments = [];
+    switchTab('Dashboard');
     const s = document.getElementById('statusMsg');
     s.className='status'; s.textContent='';
-    setToday();
+  }
+
+  // ── Comments ──
+  function renderComments() {
+    const el = document.getElementById('commentsList');
+    if (!el) return;
+    el.innerHTML = comments.map((c,i) => `
+      <div class="comment-item">
+        <button class="comment-del" onclick="deleteComment(${i})"><i class="ti ti-x"></i></button>
+        <div class="comment-item-name">${c.name}</div>
+        <div class="comment-item-date">${c.date}</div>
+        <div class="comment-item-text">${c.text}</div>
+      </div>`).join('') || '<p style="font-size:13px;color:var(--text3);margin-bottom:12px;">No comments yet.</p>';
+  }
+
+  function addComment() {
+    const name = document.getElementById('newCommentName').value.trim();
+    const text = document.getElementById('newCommentText').value.trim();
+    if (!name || !text) { alert('Please fill in both fields.'); return; }
+    const date = new Date().toLocaleDateString('en-IN',{month:'short',day:'numeric',year:'numeric'});
+    comments.push({ name, date, text });
+    document.getElementById('newCommentName').value = '';
+    document.getElementById('newCommentText').value = '';
+    renderComments();
+  }
+
+  function deleteComment(i) {
+    comments.splice(i, 1);
+    renderComments();
   }
 
   // ── Toolbar ──
@@ -464,12 +740,12 @@ export const prerender = true;
     ta.selectionStart=ta.selectionEnd=s+ins.length; ta.focus();
   }
 
-  // ── Helpers ──
+  // ── Build frontmatter ──
   function slugify(str) {
     return str.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').slice(0,60);
   }
 
-  function buildFrontmatter() {
+  function buildContent() {
     const title    = document.getElementById('postTitle').value.trim();
     const subtitle = document.getElementById('postSubtitle')?.value.trim() || '';
     const date     = document.getElementById('postDate').value;
@@ -477,45 +753,59 @@ export const prerender = true;
     const tags     = document.getElementById('postTags').value.split(',').map(t=>t.trim()).filter(Boolean);
     const cover    = document.getElementById('postCover')?.value.trim() || '';
     const preview  = document.getElementById('postPreview')?.value.trim() || '';
+    const body     = document.getElementById('postBody').value.trim();
     const type     = currentType;
 
     let fm = `---\ntitle: "${title}"\ntype: "${type}"\ndate: "${date}"\npublished: true\n`;
-    if (subtitle && (type==='Blog'||type==='Essay')) fm += `subtitle: "${subtitle}"\n`;
-    if (category && (type==='Blog'||type==='Essay')) fm += `category: "${category}"\n`;
-    if (cover    && (type==='Blog'||type==='Essay')) fm += `cover: "${cover}"\n`;
-    if (preview  &&  type==='Verse')                 fm += `preview: "${preview}"\n`;
+    if (subtitle && (type==='Blog'||type==='Essay'||type==='Story')) fm += `subtitle: "${subtitle}"\n`;
+    if (category && (type==='Blog'||type==='Essay'||type==='Story')) fm += `category: "${category}"\n`;
+    if (cover    && (type==='Blog'||type==='Essay'||type==='Story')) fm += `cover: "${cover}"\n`;
+    if (preview  && (type==='Poem'||type==='Verse'))                  fm += `preview: "${preview}"\n`;
     if (tags.length) fm += `tags:\n${tags.map(t=>`  - ${t}`).join('\n')}\n`;
     fm += `---\n\n`;
-    return fm;
+
+    let content = fm + body;
+    if (comments.length > 0) {
+      content += `\n\n---comments---\n${JSON.stringify(comments, null, 2)}`;
+    }
+    return content;
   }
 
-  // ── Publish ──
+  // ── Publish / Save ──
   async function publish() {
     const title = document.getElementById('postTitle').value.trim();
     const body  = document.getElementById('postBody').value.trim();
     if (!title) { alert('Please add a title.'); return; }
     if (!body)  { alert('Please write some content.'); return; }
 
+    const typeDir = {Blog:'blogs',Essay:'essays',Poem:'poems',Story:'stories',Notes:'notes',Verse:'verses'}[currentType];
     const slug    = slugify(title);
-    const typeDir = {Blog:'blogs',Essay:'essays',Verse:'verses',Notes:'notes'}[currentType];
-    const path    = `src/content/${typeDir}/${slug}.md`;
-    const content = buildFrontmatter() + body;
+    const path    = editingPath || `src/content/${typeDir}/${slug}.md`;
+    const content = buildContent();
     const encoded = btoa(unescape(encodeURIComponent(content)));
 
     const btn = document.getElementById('pubBtn');
     const msg = document.getElementById('statusMsg');
     btn.disabled = true;
-    msg.className = 'status loading'; msg.textContent = 'Publishing to GitHub…';
+    msg.className = 'status loading';
+    msg.textContent = editingPath ? 'Saving changes to GitHub…' : 'Publishing to GitHub…';
 
     try {
-      let sha = null;
-      const check = await fetch(
-        `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,
-        { headers: { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json' } }
-      );
-      if (check.ok) sha = (await check.json()).sha;
+      // Get current sha if not editing (in case file exists)
+      let sha = editingSha;
+      if (!sha) {
+        const check = await fetch(
+          `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,
+          { headers: { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json' } }
+        );
+        if (check.ok) sha = (await check.json()).sha;
+      }
 
-      const payload = { message: `post: ${title}`, content: encoded, branch: GITHUB_BRANCH };
+      const payload = {
+        message: editingPath ? `edit: ${title}` : `post: ${title}`,
+        content: encoded,
+        branch: GITHUB_BRANCH
+      };
       if (sha) payload.sha = sha;
 
       const res = await fetch(
@@ -532,8 +822,10 @@ export const prerender = true;
       );
 
       if (res.ok) {
+        const verb = editingPath ? 'Saved' : 'Published';
         msg.className = 'status ok';
-        msg.textContent = `✓ Published! "${title}" is live — site rebuilding in ~30 seconds.`;
+        msg.textContent = `✓ ${verb}! "${title}" — site rebuilding in ~30 seconds.`;
+        if (editingPath) editingSha = (await res.json()).content.sha;
       } else {
         const err = await res.json();
         throw new Error(err.message || 'GitHub API error');
@@ -545,14 +837,14 @@ export const prerender = true;
     btn.disabled = false;
   }
 
-// expose handlers to inline HTML in module script
-window.login = login;
-window.logout = logout;
-window.toggleEye = toggleEye;
-window.openEditor = openEditor;
-window.backToDash = backToDash;
-window.wrap = wrap;
-window.insertLine = insertLine;
-window.insertLink = insertLink;
-window.toggleMenu = toggleMenu;
-window.publish = publish;
+  // expose to inline handlers
+  window.login=login; window.logout=logout; window.toggleEye=toggleEye;
+  window.openEditor=openEditor; window.backToDash=backToDash;
+  window.wrap=wrap; window.insertLine=insertLine; window.insertLink=insertLink;
+  window.toggleMenu=toggleMenu||function(){}; window.publish=publish;
+  window.loadPostForEdit=loadPostForEdit; window.filterPosts=filterPosts;
+  window.addComment=addComment; window.deleteComment=deleteComment;
+  window.switchTab=switchTab;
+</script>
+</body>
+</html>
