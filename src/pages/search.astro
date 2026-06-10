@@ -1,0 +1,131 @@
+---
+import Base from '../layouts/Base.astro';
+import { BLOGS, ESSAYS, NOTES, VERSES, AUTHOR, formatDate as sampleFmt } from '../lib/data.js';
+import { getBlogs, getEssays, getNotes, getVerses, getPoems, getStories, formatDate } from '../lib/content.js';
+
+const realPosts = [...getBlogs(), ...getEssays(), ...getVerses(), ...getNotes(), ...getPoems(), ...getStories()];
+const realSlugs = new Set(realPosts.map(p => p.slug));
+const samplePosts = [...BLOGS, ...ESSAYS, ...NOTES, ...VERSES].filter(p => !realSlugs.has(p.slug));
+const allPosts = [...realPosts, ...samplePosts].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+// Serialize for client-side search
+const searchIndex = allPosts.map(p => ({
+  slug: p.slug,
+  title: p.title || '',
+  subtitle: p.subtitle || '',
+  type: p.type || '',
+  date: p.date || '',
+  category: p.category || '',
+  preview: (p.preview || p.body || '').replace(/<[^>]+>/g,'').slice(0, 200),
+  isReal: !p.id,
+}));
+---
+<Base title="Search — Last Page" active="search">
+  <div style="max-width:860px;margin:0 auto;padding:48px 6vw 80px;">
+    <h1 style="font-family:var(--serif);font-size:28px;color:var(--text);margin-bottom:8px;">Search</h1>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:28px;">Search across all posts, essays, notes, verse, and more.</p>
+
+    <div style="position:relative;margin-bottom:32px;">
+      <input
+        type="text"
+        id="globalSearch"
+        placeholder="Type to search…"
+        autofocus
+        style="width:100%;box-sizing:border-box;padding:12px 16px 12px 40px;border:0.5px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:15px;background:var(--bg);color:var(--text);outline:none;"
+      />
+      <span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:17px;">⌕</span>
+    </div>
+
+    <!-- Filter pills -->
+    <div class="type-pills" style="margin-bottom:24px;flex-wrap:wrap;" id="filterPills">
+      <button class="type-pill active" data-filter="all">all</button>
+      {['Blog','Essay','Verse','Poem','Story','Notes'].map(t => (
+        <button class="type-pill" data-filter={t}>{t.toLowerCase()}</button>
+      ))}
+    </div>
+
+    <div id="searchResults"></div>
+    <p id="searchEmpty" style="display:none;color:var(--text3);font-size:14px;">No results found.</p>
+    <p id="searchPrompt" style="color:var(--text3);font-size:14px;">Start typing to search…</p>
+  </div>
+</Base>
+
+<script define:vars={{ searchIndex }}>
+  const input = document.getElementById('globalSearch');
+  const results = document.getElementById('searchResults');
+  const empty = document.getElementById('searchEmpty');
+  const prompt = document.getElementById('searchPrompt');
+  const pills = document.querySelectorAll('#filterPills .type-pill');
+
+  let activeFilter = 'all';
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      activeFilter = pill.dataset.filter;
+      runSearch();
+    });
+  });
+
+  function formatDate(d) {
+    if (!d) return '';
+    return new Date(d).toLocaleDateString('en-IN', { month:'short', day:'numeric', year:'numeric' });
+  }
+
+  function highlight(text, q) {
+    if (!q) return text;
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark style="background:var(--text);color:var(--bg);padding:0 2px;border-radius:2px;">$1</mark>');
+  }
+
+  function runSearch() {
+    const q = (input.value || '').toLowerCase().trim();
+
+    if (!q && activeFilter === 'all') {
+      results.innerHTML = '';
+      empty.style.display = 'none';
+      prompt.style.display = '';
+      return;
+    }
+    prompt.style.display = 'none';
+
+    const filtered = searchIndex.filter(p => {
+      const typeMatch = activeFilter === 'all' || p.type === activeFilter;
+      if (!q) return typeMatch;
+      const textMatch =
+        p.title.toLowerCase().includes(q) ||
+        p.subtitle.toLowerCase().includes(q) ||
+        p.preview.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        p.type.toLowerCase().includes(q);
+      return typeMatch && textMatch;
+    });
+
+    if (filtered.length === 0) {
+      results.innerHTML = '';
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+
+    results.innerHTML = filtered.map(p => {
+      const typeLC = p.type.toLowerCase();
+      const title = highlight(p.title || '(untitled)', q);
+      const sub = p.subtitle ? `<div style="font-size:13px;color:var(--text2);margin-top:4px;">${highlight(p.subtitle, q)}</div>` : '';
+      const prev = p.preview ? `<div style="font-size:13px;color:var(--text3);margin-top:6px;line-height:1.6;">${highlight(p.preview.slice(0, 160), q)}…</div>` : '';
+      return `
+        <a href="/blog/${p.slug}" style="display:block;padding:18px 0;border-bottom:0.5px solid var(--border2);text-decoration:none;color:inherit;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span class="badge badge-${typeLC}" style="font-size:10px;">${p.type}</span>
+            ${p.category ? `<span style="font-size:11px;color:var(--text3);">${p.category}</span>` : ''}
+            <span style="font-size:11px;color:var(--text3);margin-left:auto;">${formatDate(p.date)}</span>
+          </div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--text);line-height:1.4;">${title}</div>
+          ${sub}${prev}
+        </a>`;
+    }).join('');
+  }
+
+  input?.addEventListener('input', runSearch);
+</script>
