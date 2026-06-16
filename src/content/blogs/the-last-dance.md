@@ -5,6 +5,7 @@ date: "2026-06-16"
 published: true
 subtitle: "Messi and Ronaldo may be taking their final walk onto football's biggest stage, and the sport still owes us one impossible match"
 category: "Sports and Events"
+cover: "https://assets.goal.com/images/v3/blt97c94975b9146c91/056bc529c0e3272d2bdcaee02bcb3d65a848c28a.jpg?width=1400&upscale=true"
 tags:
   - Lionel Messi
   - Cristiano Ronaldo
