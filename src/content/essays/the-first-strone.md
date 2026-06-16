@@ -1,32 +1,29 @@
 ---
-title: "Subjugation is Heredity"
+title: "The First Stone"
 type: "Essay"
-date: "2026-05-15"
+date: "2026-06-16"
 published: true
-subtitle: "The Leash We Call Loyalty: On How Obedience Was Never Forced Upon Us, Only Fed to Us Slowly, and the Quiet Architecture Built to Keep It That Way"
-category: "Society and Future"
-cover: "https://images.unsplash.com/photo-1574788175339-a53dcba9a9bd?q=80&w=3526&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+subtitle: "On Jesus, Judgment, and Why a Single Sentence Still Feels More Radical Than Most Moral Certainties"
+category: "Faith and Philosophy"
+cover: "https://cdn.magicdecor.in/com/2024/06/11175156/Jesus-Entering-Jerusalem-Cosauti-Monastery-Church-Painting-Wallpaper-Mural.jpg"
 tags:
-  - Freedom
+  - Jesus
+  - Mary Magdalene
+  - Christianity
+  - Grace
+  - Judgment
+  - Agnosticism
 ---
 
-After finishing 1984, I could not put down a thought that had no intention of leaving. Orwell does not warn you about power. He warns you about what power does to the people who never held it, how it shapes them, trains them, makes them grateful for their own diminishment. The book is not about a dystopia that might happen. It is about a psychology that already has.
-That psychology has a history. Long, patient, almost elegant. And the more I traced it backward, through centuries and systems and the different masks it wore, the more it looked less like a series of political failures and more like something passed down. Something inherited. Not in blood, but in belief. In the stories we are handed before we are old enough to question them. In the loyalties we are taught to feel before we understand what loyalty costs.
-This is what alarms me. Not the existence of power. What unsettles me is how it never changed, because we kept falling for the same promises of slavery. 
-## The Code That Came Before the Law
-Go back far enough and you find the Comitatus. Anglo-Saxon warriors bound to their lord by obligation that predated written law. Avenge your lord or die in the attempt. Their lives were not their own. Their deaths were not their own. And they were taught, carefully and consistently, to call this honor. That is the part worth sitting with. Not that they were controlled, but that they were made to find beauty in it.
-Feudalism repeated the pattern. The Bushido code of the samurai did the same. Every civilization, in its own language and ceremony, arrived at the same transaction. You will be protected, they said. You will belong. What was never said is that the belonging on offer is conditional. Conditional on silence. Conditional on service. Conditional on never pulling too hard at what you have been given to believe.
-The warmth of the group is real. That is what makes it work. The cost of that warmth is everything.
-## The Feeling the System Produces
-Leadership has long been confused with governance, and governance with reigning. This confusion is not accidental. It is load bearing. Because if people understood that being ruled and being led are not the same thing, the entire arrangement would become difficult to maintain. So the confusion is cultivated across generations until subjecthood begins to feel natural. And once that feeling is established, you do not need chains. You have something far more durable. Quiet, inherited, largely unexamined consent.
-Today we call it nationalism. There is something genuinely human in loving the place that made you. That love is real. But watch what happens when someone who needs that love picks it up and puts it to work. Watch how critique becomes betrayal. How a citizen slowly becomes a subject again, not through force but through feeling. Through the convincing that the system and the self are the same thing, so that any threat to one registers as a threat to the other.
-We do this in corporations, in political parties, in communities built on shared suspicion of the outside. The content changes. The structure never does. Belonging has always been the leash. And the leash works precisely because it does not feel like one.
-## The Trap Is Not the System
-The cruelest part is not the exploitation. It is the invisibility of it. People do not feel exploited. They feel purposeful. And that feeling, that sense of mattering within something larger than yourself, is so deeply human that it becomes almost impossible to question without feeling like you are dismantling yourself in the process.
-Questioning feels like betrayal. It is designed to feel that way. The system has had centuries to understand what threatens it, and nothing threatens it more than a person who stops taking their inherited loyalties on faith. So doubt is reframed as weakness, and the person who starts pulling at the edges of what they were given to believe finds themselves suddenly very alone.
-I think that loneliness might be the beginning of something honest.
-## What We Call Freedom
-We use the word constantly and examine it almost never. But I heard something once that I have not been able to shake. That freedom is not merely buying your favorite toothpaste. When I first heard it I almost laughed. Then I felt it settle. Because that is precisely what we have been handed and told to celebrate. The freedom of preference. Choosing between options on a shelf we did not stock, in a store we did not build, inside an economy whose terms were set before we were born.
-If that is freedom, then we have been living in a very convincing room and calling it the open air.
-I do not have a clean answer to what real freedom looks like. But I think it begins the moment you become genuinely unwilling to let someone else's need for power define the limits of your own thinking.
-That is where manipulation ends. That is where something true might, with effort and discomfort and no guarantee of arrival, finally begin.
+## Between Faith and Doubt
+Though I was born and raised a Christian, I find it hard to call myself religious anymore. Not in the traditional sense. I do not attend church regularly. I do not quote scripture in casual conversation or shape my life around divine commandments. At the same time, I do not identify as an atheist. I do not carry the certainty that there is no higher power. If anything, I exist in that quiet in-between space, where belief and skepticism both live. I suppose you could call it agnosticism, but even that feels too final. I am open, but unconvinced. These days I find more comfort in questions than in answers.
+## Being Called by Your Name
+Recently I started watching *The Chosen*. I approached it with very low expectations, more curiosity than anything else. I thought I would observe it like a cultural artifact, detached and analytical. But it surprised me. Something about the way it was told, the way the characters were presented, felt unusually sincere. There is a moment at the end of the first episode that genuinely moved me. Jesus meets a woman who has been going by the name Lilith. She is shattered in spirit and disconnected from herself. No one can reach her. But when he approaches, he simply says her true name, "Mary" (Mary Magdalene). That is all. No sermon. No spectacle. Just a name, spoken with quiet authority and deep compassion. And in that moment, something shifts. Not just in her, but in the air around her. I felt it too.
+## Recognition as Grace
+I do not know if Jesus was God. I am not sure I ever will. But I have come to believe that even if he was only a man, he was an extraordinary one. A man who could see the unseen. Who met people in their most fractured moments and offered them dignity. That is not something small. In a world obsessed with performance, purity, and piety, he seemed to care about none of that. He cared about people. The moment he calls Mary by her name is not a miracle in the traditional sense, but it feels like one. It reminds me that recognition itself is holy. To be known when you are lost is its own kind of salvation.
+## The Weight of a Single Sentence
+There is another story that stays with me more than any of the supernatural ones. A woman is about to be stoned. The crowd is ready. The punishment is accepted as lawful and justified. And Jesus interrupts without force, without anger. He simply says, *"Let the one who has never sinned cast the first stone."* That one sentence carries the weight of an entire philosophy. It cuts through legalism and pride and self-righteousness in the most disarming way. He does not condemn the crowd, but he invites them to look inward. And one by one, they leave. It is not a display of divine power, but a moment of moral clarity.
+## The Ease of Judgment
+That line dismantles something we still cling to. Even today, judgment is easy. Shaming others is a kind of public sport. It is easier to accuse than to reflect. We live in a time when moral superiority is often louder than humility. And yet, this quiet figure from an ancient story asks us to pause and consider our own faults before we condemn someone else. That remains revolutionary. That remains rare.
+## What Still Remains
+So no, I am not religious in the way I used to be. I may never be again. But I do believe Jesus stood for something powerful. Not an empire, not control, not fear. He stood for something softer. Something human. A kind of grace that speaks not to your beliefs but to your being. And whether or not he was divine, that vision is still worth remembering. It still matters. Maybe more than ever.
